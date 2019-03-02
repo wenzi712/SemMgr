@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-engine-xml>
+    <!-- 词类基础数据 -->
+    <SemWordType wordTypeId="TYPE_Test" wordTypeName="品牌词" />
+    <SemWordType wordTypeId="TYPE_001" wordTypeName="A 类词" />
+    <SemWordType wordTypeId="TYPE_002" wordTypeName="B 类词" />
+    <SemWordType wordTypeId="TYPE_003" wordTypeName="C 类词" />
+    <SemWordType wordTypeId="TYPE_004" wordTypeName="网页" />
+    
+</entity-engine-xml>

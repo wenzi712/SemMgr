@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entitymodel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/entitymodel.xsd">
+    <!-- ========================================================= -->
+    <!-- ======================== Defaults ======================= -->
+    <!-- ========================================================= -->
+    <title>Entity of SemMgr Component</title>
+    <description>None</description>
+    <copyright></copyright>
+    <version></version>
+
+    <entity entity-name="SemWordType" package-name="com.yh.sem.word" title="词类表">
+        <field name="wordTypeId" type="id-ne">
+            <description>词类ID</description>
+        </field>
+        <field name="wordTypeName" type="name">
+            <description>词类名称</description>
+        </field>
+
+        <prim-key field="wordTypeId" />
+    </entity>
+
+    <entity entity-name="SemKeyWord" package-name="com.yh.sem.word" title="词类明细表">
+        <field name="keyWordId" type="id-ne">
+            <description>关键词ID</description>
+        </field>
+        <field name="keyWord" type="name">
+            <description>关键词</description>
+        </field>
+        <field name="wordTypeId" type="id">
+            <description>词类Id</description>
+        </field>
+
+        <prim-key field="keyWordId" />
+        <relation rel-entity-name="SemWordType" type="one">
+            <key-map field-name="wordTypeId" />
+        </relation>
+    </entity>
+
+
+</entitymodel>
