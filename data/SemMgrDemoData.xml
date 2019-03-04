@@ -1,6 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entity-engine-xml>
-
-
-
+<!-- 词类表数据-->
+	<SemKeyWord keyWord="植发"/>
+	<SemKeyWord keyWord="雍和"/>
+	<SemKeyWord keyWord="毛囊"/>
+<!-- 区域表数据 -->
+	<SemRegion regionId="region01" regionName="河北" parentId="parent01" levelId="1"/>
+	<SemRegion regionId="region02" regionName="河南" parentId="parent02" levelId="2"/>
+	<SemRegion regionId="region03" regionName="四川" parentId="parent03" levelId="3"/>
+<!-- 渠道表数据-->
+	<SemChannel channelId="channel_01" valid="1"/>
+	<SemChannel channelId="channel_02" valid="1"/>
+	<SemChannel channelId="channel_03" valid="1"/>
+	<SemChannel channelId="channel_04" valid="1"/>
+<!-- 账户表数据 -->
+	<SemAccount accountId="account_01" channelId="channelId_01" valid="1" infoFlow="1"/>
+	<SemAccount accountId="account_02" channelId="channelId_02" valid="1" infoFlow="1"/>
+	<SemAccount accountId="account_03" channelId="channelId_03" valid="1" infoFlow="1"/>
+	<SemAccount accountId="account_04" channelId="channelId_04" valid="1" infoFlow="1"/>
+<!-- 区域日报数据 -->
+	<SemRegionRpt rptId="rpt_01" rptDate="" regionId="1000" regionName="北京" 城市ID="1000" cityName="北京" impression="2"
+	click="0" cost="0.0" ctr="0.00%" cpc="0.0" cpm="0.0" position="" conversion="" locatingMethod="" planId="" planName=""/>
+	
+	<SemRegionRpt rptId="rpt_02" rptDate="" regionId="11000" regionName="甘肃" 城市ID="11255" cityName="酒泉" impression="1"
+	click="0" cost="0.0" ctr="0.00%" cpc="0.0" cpm="0.0" position="" conversion="" locatingMethod="" planId="" planName=""/>
+	
+	<SemRegionRpt rptId="rpt_03" rptDate="" regionId="12000" regionName="广西" 城市ID="12105" cityName="玉林" impression="2"
+	click="0" cost="0.0" ctr="0.00%" cpc="0.0" cpm="0.0" position="" conversion="" locatingMethod="" planId="" planName=""/>
+	
+	<SemRegionRpt rptId="rpt_04" rptDate="" regionId="13000" regionName="北京" 城市ID="13304" cityName="保定" impression="2"
+	click="0" cost="0.0" ctr="0.00%" cpc="0.0" cpm="0.0" position="" conversion="" locatingMethod="" planId="" planName=""/>
+<!-- 报表台账数据 -->
+	<SemRptRecord rptId="rptId_01" rptDate="" requestTime="" reportId="rpt_01" statusTime="" statusId="3" fileUrlTime="" 
+	fileUrl="" isFinished="1"/>
+	<SemRptRecord rptId="rptId_02" rptDate="" requestTime="" reportId="rpt_02" statusTime="" statusId="3" fileUrlTime="" 
+	fileUrl="" isFinished="1"/>
+	<SemRptRecord rptId="rptId_03" rptDate="" requestTime="" reportId="rpt_03" statusTime="" statusId="3" fileUrlTime="" 
+	fileUrl="" isFinished="1"/>
+<!-- 关键词日报表  -->	
+	
+	
 </entity-engine-xml>
