@@ -284,6 +284,4 @@
 
         <prim-key field="recordId" />
     </entity>
-
-
 </entitymodel>
