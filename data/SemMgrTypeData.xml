@@ -6,15 +6,19 @@
     <SemWordType wordTypeId="TYPE_002" wordTypeName="B 类词" />
     <SemWordType wordTypeId="TYPE_003" wordTypeName="C 类词" />
     <SemWordType wordTypeId="TYPE_004" wordTypeName="网页" />
+
+    <!-- 渠道类型数据 -->
+    <SemChannel channelId="BD" channelName="百度"/>
+    <SemChannel channelId="SG" channelName="搜狗"/>
+    <SemChannel channelId="SM" channelName="神马"/>
+    <SemChannel channelId="KST" channelName="快商通"/>
     
     <!-- 词类明细表 -->
-   <!--  <SemKeyWord keyWordId="keyWordId_01" wordTypeId="TYPE_001"/>
+    <!--  
+    <SemKeyWord keyWordId="keyWordId_01" wordTypeId="TYPE_001"/>
     <SemKeyWord keyWordId="keyWordId_02" wordTypeId="TYPE_002"/>
-    <SemKeyWord keyWordId="keyWordId_03" wordTypeId="TYPE_003"/> -->
-    <!-- 渠道类型数据 -->
-    <SemChannel channelId="channel_01" channelName="BD"/>
-    <SemChannel channelId="channel_02" channelName="SG"/>
-    <SemChannel channelId="channel_03" channelName="SM"/>
-    <SemChannel channelId="channel_04" channelName="KST"/>
+    <SemKeyWord keyWordId="keyWordId_03" wordTypeId="TYPE_003"/> 
+    -->
+
     
 </entity-engine-xml>

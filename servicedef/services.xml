@@ -1,14 +1,97 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/services.xsd">
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/services.xsd">
     <description>SemMgr Services</description>
     <vendor></vendor>
     <version>1.0</version>
 
-    <service name="noSyntaxError" engine="interface">
-        <description>
-            Dummy service to prevent empty files and syntax error - Remove when the 1st real service will be added here 
-        </description>
-    </service> 
+    <!-- SemRegion services -->
+    <service name="createSemRegion" engine="entity-auto" invoke="create" default-entity-name="SemRegion" auth="true">
+        <description>Create a SemRegion</description>
+        <auto-attributes include="all" mode="IN" optional="true" />
+        <attribute name="regionId" type="String" mode="INOUT" optional="false" />
+        <attribute name="regionName" type="String" mode="IN" optional="false" />
+    </service>
+    <service name="updateSemRegion" engine="entity-auto" invoke="update" default-entity-name="SemRegion" auth="true">
+        <description>Update a SemRegion</description>
+        <auto-attributes include="nonpk" mode="IN" optional="true" />
+        <attribute name="regionId" type="String" mode="INOUT" optional="false" />
+        <attribute name="regionName" type="String" mode="IN" optional="false" />
+    </service>
+
+    <!-- SemChannel services -->
+    <service name="createSemChannel" engine="entity-auto" invoke="create" default-entity-name="SemChannel" auth="true">
+        <description>Create a SemChannel</description>
+        <auto-attributes include="all" mode="IN" optional="true" />
+        <attribute name="channelId" type="String" mode="INOUT" optional="false" />
+        <attribute name="channelName" type="String" mode="IN" optional="false" />
+    </service>
+    <service name="updateSemChannel" engine="entity-auto" invoke="update" default-entity-name="SemChannel" auth="true">
+        <description>Update a SemChannel</description>
+        <auto-attributes include="nonpk" mode="IN" optional="true" />
+        <attribute name="channelId" type="String" mode="INOUT" optional="false" />
+        <attribute name="channelName" type="String" mode="IN" optional="false" />
+    </service>
+
+    <!-- SemAccount services -->
+    <service name="createSemAccount" engine="entity-auto" invoke="create" default-entity-name="SemAccount" auth="true">
+        <description>Create a SemAccount</description>
+        <auto-attributes include="all" mode="IN" optional="true" />
+        <attribute name="accountName" type="String" mode="IN" optional="false" />
+        <attribute name="channelId" type="String" mode="IN" optional="false" />
+        <attribute name="accountId" type="String" mode="OUT" optional="false" />
+    </service>
+    <service name="updateSemAccount" engine="entity-auto" invoke="update" default-entity-name="SemAccount" auth="true">
+        <description>Update a SemAccount</description>
+        <auto-attributes include="nonpk" mode="IN" optional="true" />
+        <attribute name="channelId" type="String" mode="INOUT" optional="false" />
+    </service>
+
+    <!-- SemRegionRpt services -->
+    <service name="createSemRegionRpt" engine="entity-auto" invoke="create" default-entity-name="SemRegionRpt"
+        auth="true">
+        <description>Create a SemRegionRpt</description>
+        <auto-attributes include="all" mode="IN" optional="true" />
+        <attribute name="accountId" type="String" mode="IN" optional="false" />
+        <attribute name="rptDate" type="java.sql.Date" mode="IN" optional="false" />
+        <attribute name="rptId" type="String" mode="OUT" optional="false" />
+    </service>
+    <service name="updateSemRegionRpt" engine="entity-auto" invoke="update" default-entity-name="SemRegionRpt"
+        auth="true">
+        <description>Update a SemRegionRpt</description>
+        <auto-attributes include="nonpk" mode="IN" optional="true" />
+        <attribute name="rptId" type="String" mode="INOUT" optional="false" />
+    </service>
+
+    <!-- SemKeyWordRpt services -->
+    <service name="createSemKeyWordRpt" engine="entity-auto" invoke="create" default-entity-name="SemKeyWordRpt"
+        auth="true">
+        <description>Create a SemKeyWordRpt</description>
+        <auto-attributes include="all" mode="IN" optional="true" />
+        <attribute name="accountId" type="String" mode="IN" optional="false" />
+        <attribute name="rptDate" type="java.sql.Date" mode="IN" optional="false" />
+        <attribute name="rptId" type="String" mode="OUT" optional="false" />
+    </service>
+    <service name="updateSemKeyWordRpt" engine="entity-auto" invoke="update" default-entity-name="SemKeyWordRpt"
+        auth="true">
+        <description>Update a SemKeyWordRpt</description>
+        <auto-attributes include="nonpk" mode="IN" optional="true" />
+        <attribute name="rptId" type="String" mode="INOUT" optional="false" />
+    </service>
     
+    <!-- SemRptRecord services -->
+    <service name="createSemRptRecord" engine="entity-auto" invoke="create" default-entity-name="SemRptRecord"
+        auth="true">
+        <description>Create a SemRptRecord</description>
+        <auto-attributes include="all" mode="IN" optional="true" />
+        <attribute name="accountId" type="String" mode="IN" optional="false" />
+        <attribute name="rptTypeId" type="String" mode="IN" optional="false" />
+        <attribute name="rptDate" type="java.sql.Date" mode="IN" optional="false" />
+        <attribute name="recordId" type="String" mode="INOUT" optional="false" />
+    </service>
+    <service name="updateSemRptRecord" engine="entity-auto" invoke="update" default-entity-name="SemRptRecord"
+        auth="true">
+        <description>Update a SemRptRecord</description>
+        <auto-attributes include="nonpk" mode="IN" optional="true" />
+        <attribute name="recordId" type="String" mode="INOUT" optional="false" />
+    </service>
 </services>

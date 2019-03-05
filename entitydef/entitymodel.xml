@@ -258,6 +258,11 @@
         </field>
         <field name="rptTypeId" type="id">
             <description>报表类型</description>
+            <!-- [REGION:区域报表; KEYWORD:关键词报表] -->
+        </field>
+        <field name="infoFlow" type="indicator">
+            <description>是否百度信息流报告</description>
+            <!-- [0:否; 1:是] -->
         </field>
         <field name="requestTime" type="date-time">
             <description>请求时间</description>
@@ -269,7 +274,7 @@
             <description>状态查询时间</description>
         </field>
         <field name="statusId" type="id">
-            <description>状态ID</description>
+            <description>状态ID[1:等待中; 2:处理中; 3:处理成功]</description>
         </field>
         <field name="fileUrlTime" type="date-time">
             <description>文件获取时间</description>

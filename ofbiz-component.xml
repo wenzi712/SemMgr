@@ -19,10 +19,12 @@
     <entity-resource type="data" reader-name="seed" loader="main" location="data/SemMgrTypeData.xml"/>
     <entity-resource type="data" reader-name="seed" loader="main" location="data/SemMgrSecurityPermissionSeedData.xml"/>
     <entity-resource type="data" reader-name="demo" loader="main" location="data/SemMgrSecurityGroupDemoData.xml"/>
+    <!--  
     <entity-resource type="data" reader-name="demo" loader="main" location="data/SemMgrDemoData.xml"/>
-
+    -->
     <!-- service resources: model(s), eca(s) and group definitions -->
     <service-resource type="model" loader="main" location="servicedef/services.xml"/>
+    <service-resource type="model" loader="main" location="servicedef/services_rpt.xml"/>
     <!--
     <service-resource type="eca" loader="main" location="servicedef/secas.xml"/>
     <service-resource type="group" loader="main" location="servicedef/groups.xml"/>
