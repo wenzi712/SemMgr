@@ -2,7 +2,7 @@
 <entity-engine-xml>
     <!-- 账户表数据 -->
     <SemAccount accountId="101" accountName="searchlab" accountPwd="SearchUX2016" accountToken="1085ffb557845b3d75d75b7762c8910a"
-        channelId="BD" valid="1" /> 
+        channelId="BD" valid="1"  infoFlow="0" /> 
         
     <!-- 词类表数据-->
     <SemKeyWord keyWord="植发" />

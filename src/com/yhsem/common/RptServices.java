@@ -23,6 +23,7 @@ import org.ofbiz.base.util.UtilValidate;
 import org.ofbiz.entity.Delegator;
 import org.ofbiz.entity.GenericEntityException;
 import org.ofbiz.entity.GenericValue;
+import org.ofbiz.entity.transaction.TransactionUtil;
 import org.ofbiz.entity.util.EntityUtil;
 import org.ofbiz.service.DispatchContext;
 import org.ofbiz.service.LocalDispatcher;
@@ -81,13 +82,9 @@ public class RptServices {
                                 "accountId", accountId, "rptDate", rptDate, "rptTypeId", "REGION", "infoFlow", "0"),
                                 UtilMisc.toList("accountId"), false));
                         String reportId = null;
-                        // 数据为空,或者报表字段为空,则新建
-                        if (UtilValidate.isEmpty(record1)
-                                || (UtilValidate.isNotEmpty(record1) && UtilValidate.isEmpty(record1.get("reportId")))) {
-                            reportId = report.getRegionReportId(delegator, false);
-                        }
-
+                        // 数据为空则新建
                         if (UtilValidate.isEmpty(record1)) {
+                            reportId = report.getRegionReportId(delegator, false);
                             ModelService createSemRptRecordService = dispatcher.getDispatchContext().getModelService(
                                     "createSemRptRecord");
                             Map<String, Object> paramMap = FastMap.newInstance();
@@ -99,17 +96,6 @@ public class RptServices {
                             Map<String, Object> createSemRptRecordMap = createSemRptRecordService.makeValid(paramMap,
                                     ModelService.IN_PARAM);
                             dispatcher.runSync(createSemRptRecordService.name, createSemRptRecordMap);
-                        } else if ((UtilValidate.isNotEmpty(record1) && UtilValidate.isEmpty(record1.get("reportId")))) {
-                            ModelService updateSemRptRecordService = dispatcher.getDispatchContext().getModelService(
-                                    "updateSemRptRecord");
-                            Map<String, Object> paramMap = FastMap.newInstance();
-                            paramMap.putAll(UtilMisc.toMap("recordId", record1.getString("recordId"), "reportId",
-                                    reportId, "isFinished", "0", "requestTime", UtilDateTime.nowTimestamp()));
-                            paramMap.put("infoFlow", "0");
-                            paramMap.put("userLogin", userLogin);
-                            Map<String, Object> updateSemRptRecordMap = updateSemRptRecordService.makeValid(paramMap,
-                                    ModelService.IN_PARAM);
-                            dispatcher.runSync(updateSemRptRecordService.name, updateSemRptRecordMap);
                         }
 
                         // 关键词报告
@@ -118,12 +104,9 @@ public class RptServices {
                                 UtilMisc.toList("accountId"), false));
                         // 获取报告ID
                         String reportId2 = null;
-                        if (UtilValidate.isEmpty(record2)
-                                || (UtilValidate.isNotEmpty(record2) && UtilValidate.isEmpty(record2.get("reportId")))) {// 数据为空,或者报表字段为空,则新建
-                            reportId2 = report.getKeywordReportId(delegator, false);
-                        }
-
                         if (UtilValidate.isEmpty(record2)) {
+                            reportId2 = report.getKeywordReportId(delegator, false);
+
                             ModelService createSemRptRecordService = dispatcher.getDispatchContext().getModelService(
                                     "createSemRptRecord");
                             Map<String, Object> paramMap = FastMap.newInstance();
@@ -135,17 +118,6 @@ public class RptServices {
                             Map<String, Object> createSemRptRecordMap = createSemRptRecordService.makeValid(paramMap,
                                     ModelService.IN_PARAM);
                             dispatcher.runSync(createSemRptRecordService.name, createSemRptRecordMap);
-                        } else if ((UtilValidate.isNotEmpty(record2) && UtilValidate.isEmpty(record2.get("reportId")))) {
-                            ModelService updateSemRptRecordService = dispatcher.getDispatchContext().getModelService(
-                                    "updateSemRptRecord");
-                            Map<String, Object> paramMap = FastMap.newInstance();
-                            paramMap.putAll(UtilMisc.toMap("recordId", record2.getString("recordId"), "reportId",
-                                    reportId2, "isFinished", "0", "requestTime", UtilDateTime.nowTimestamp()));
-                            paramMap.put("infoFlow", "0");
-                            paramMap.put("userLogin", userLogin);
-                            Map<String, Object> updateSemRptRecordMap = updateSemRptRecordService.makeValid(paramMap,
-                                    ModelService.IN_PARAM);
-                            dispatcher.runSync(updateSemRptRecordService.name, updateSemRptRecordMap);
                         }
 
                         // 信息流
@@ -155,13 +127,8 @@ public class RptServices {
                                     .toMap("accountId", accountId, "rptDate", rptDate, "rptTypeId", "REGION",
                                             "infoFlow", "1"), UtilMisc.toList("accountId"), false));
                             String reportId3 = null;
-                            if (UtilValidate.isEmpty(record3)
-                                    || (UtilValidate.isNotEmpty(record3) && UtilValidate.isEmpty(record3
-                                            .get("reportId")))) {// 数据为空,或者报表字段为空,则新建
-                                reportId3 = report.getRegionReportId(delegator, true);
-                            }
-
                             if (UtilValidate.isEmpty(record3)) {
+                                reportId3 = report.getRegionReportId(delegator, true);
                                 ModelService createSemRptRecordService = dispatcher.getDispatchContext()
                                         .getModelService("createSemRptRecord");
                                 Map<String, Object> paramMap = FastMap.newInstance();
@@ -173,18 +140,6 @@ public class RptServices {
                                 Map<String, Object> createSemRptRecordMap = createSemRptRecordService.makeValid(
                                         paramMap, ModelService.IN_PARAM);
                                 dispatcher.runSync(createSemRptRecordService.name, createSemRptRecordMap);
-                            } else if ((UtilValidate.isNotEmpty(record3) && UtilValidate.isEmpty(record3
-                                    .get("reportId")))) {
-                                ModelService updateSemRptRecordService = dispatcher.getDispatchContext()
-                                        .getModelService("updateSemRptRecord");
-                                Map<String, Object> paramMap = FastMap.newInstance();
-                                paramMap.putAll(UtilMisc.toMap("recordId", record3.getString("recordId"), "reportId",
-                                        reportId3, "isFinished", "0", "requestTime", UtilDateTime.nowTimestamp()));
-                                paramMap.put("infoFlow", "1");
-                                paramMap.put("userLogin", userLogin);
-                                Map<String, Object> updateSemRptRecordMap = updateSemRptRecordService.makeValid(
-                                        paramMap, ModelService.IN_PARAM);
-                                dispatcher.runSync(updateSemRptRecordService.name, updateSemRptRecordMap);
                             }
 
                             // 信息流关键词报告
@@ -193,13 +148,9 @@ public class RptServices {
                                             "infoFlow", "1"), UtilMisc.toList("accountId"), false));
                             // 获取报告ID
                             String reportId4 = null;
-                            if (UtilValidate.isEmpty(record4)
-                                    || (UtilValidate.isNotEmpty(record4) && UtilValidate.isEmpty(record4
-                                            .get("reportId")))) {// 数据为空,或者报表字段为空,则新建
-                                reportId4 = report.getKeywordReportId(delegator, true);
-                            }
-
                             if (UtilValidate.isEmpty(record4)) {
+                                reportId4 = report.getKeywordReportId(delegator, true);
+
                                 ModelService createSemRptRecordService = dispatcher.getDispatchContext()
                                         .getModelService("createSemRptRecord");
                                 Map<String, Object> paramMap = FastMap.newInstance();
@@ -211,18 +162,7 @@ public class RptServices {
                                 Map<String, Object> createSemRptRecordMap = createSemRptRecordService.makeValid(
                                         paramMap, ModelService.IN_PARAM);
                                 dispatcher.runSync(createSemRptRecordService.name, createSemRptRecordMap);
-                            } else if ((UtilValidate.isNotEmpty(record4) && UtilValidate.isEmpty(record4
-                                    .get("reportId")))) {
-                                ModelService updateSemRptRecordService = dispatcher.getDispatchContext()
-                                        .getModelService("updateSemRptRecord");
-                                Map<String, Object> paramMap = FastMap.newInstance();
-                                paramMap.putAll(UtilMisc.toMap("recordId", record4.getString("recordId"), "reportId",
-                                        reportId4, "isFinished", "0", "requestTime", UtilDateTime.nowTimestamp()));
-                                paramMap.put("infoFlow", "1");
-                                paramMap.put("userLogin", userLogin);
-                                Map<String, Object> updateSemRptRecordMap = updateSemRptRecordService.makeValid(
-                                        paramMap, ModelService.IN_PARAM);
-                                dispatcher.runSync(updateSemRptRecordService.name, updateSemRptRecordMap);
+
                             }
                         }
                     } catch (Exception e) {
@@ -250,17 +190,10 @@ public class RptServices {
      */
     public static Map<String, Object> checkFailureReportRequest(DispatchContext dctx,
             Map<String, ? extends Object> context) {
-        LocalDispatcher dispatcher = dctx.getDispatcher();
         Delegator delegator = dctx.getDelegator();
 
         List<GenericValue> recordList = SemRptHelper.getFailureRequestRptRecords(delegator);
         if (UtilValidate.isNotEmpty(recordList)) {
-            GenericValue userLogin = null;
-            try {
-                userLogin = delegator.findOne("UserLogin", UtilMisc.toMap("userLoginId", "system"), true);
-            } catch (GenericEntityException e1) {
-                e1.printStackTrace();
-            }
 
             for (Iterator<GenericValue> iterator = recordList.iterator(); iterator.hasNext();) {
                 GenericValue record = iterator.next();
@@ -275,8 +208,6 @@ public class RptServices {
                     String reportId = null;
                     if (UtilValidate.isNotEmpty(acct)) {
                         String channelId = acct.getString("channelId");
-                        String rptTypeId = record.getString("rptTypeId");
-
                         if (UtilValidate.areEqual("BD", channelId)) {
                             AccountInstance account = new AccountInstance(acct.getString("accountName"),
                                     acct.getString("accountPwd"), acct.getString("accountToken"));
@@ -301,15 +232,22 @@ public class RptServices {
 
                         }
 
-                        ModelService updateSemRptRecordService = dispatcher.getDispatchContext().getModelService(
-                                "updateSemRptRecord");
-                        Map<String, Object> paramMap = FastMap.newInstance();
-                        paramMap.putAll(UtilMisc.toMap("recordId", record.getString("recordId"), "reportId", reportId,
-                                "requestTime", UtilDateTime.nowTimestamp()));
-                        paramMap.put("userLogin", userLogin);
-                        Map<String, Object> updateSemRptRecordMap = updateSemRptRecordService.makeValid(paramMap,
-                                ModelService.IN_PARAM);
-                        dispatcher.runSync(updateSemRptRecordService.name, updateSemRptRecordMap);
+                        if (UtilValidate.isNotEmpty(reportId)) {
+                            boolean beganTransaction = false;
+                            try {
+                                beganTransaction = TransactionUtil.begin();
+
+                                record.set("reportId", reportId);
+                                record.set("requestTime", UtilDateTime.nowTimestamp());
+
+                                delegator.store(record);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                TransactionUtil.rollback(beganTransaction, e.getMessage(), e);
+                            } finally {
+                                TransactionUtil.commit(beganTransaction);
+                            }
+                        }
                     }
                 } catch (GenericEntityException e) {
                     e.printStackTrace();
@@ -330,18 +268,10 @@ public class RptServices {
      * @return
      */
     public static Map<String, Object> queryReportStatus(DispatchContext dctx, Map<String, ? extends Object> context) {
-        LocalDispatcher dispatcher = dctx.getDispatcher();
         Delegator delegator = dctx.getDelegator();
 
         List<GenericValue> recordList = SemRptHelper.getQueryStatusRptRecords(delegator);
         if (UtilValidate.isNotEmpty(recordList)) {
-            GenericValue userLogin = null;
-            try {
-                userLogin = delegator.findOne("UserLogin", UtilMisc.toMap("userLoginId", "system"), true);
-            } catch (GenericEntityException e1) {
-                e1.printStackTrace();
-            }
-
             for (Iterator<GenericValue> iterator = recordList.iterator(); iterator.hasNext();) {
                 GenericValue record = iterator.next();
 
@@ -364,16 +294,20 @@ public class RptServices {
                         } else if (UtilValidate.areEqual("SM", channelId)) {
 
                         }
+                        boolean beganTransaction = false;
+                        try {
+                            beganTransaction = TransactionUtil.begin();
 
-                        ModelService updateSemRptRecordService = dispatcher.getDispatchContext().getModelService(
-                                "updateSemRptRecord");
-                        Map<String, Object> paramMap = FastMap.newInstance();
-                        paramMap.putAll(UtilMisc.toMap("recordId", reportId, "statusId", statusId, "statusTime",
-                                UtilDateTime.nowTimestamp()));
-                        paramMap.put("userLogin", userLogin);
-                        Map<String, Object> updateSemRptRecordMap = updateSemRptRecordService.makeValid(paramMap,
-                                ModelService.IN_PARAM);
-                        dispatcher.runSync(updateSemRptRecordService.name, updateSemRptRecordMap);
+                            record.set("statusId", statusId);
+                            record.set("statusTime", UtilDateTime.nowTimestamp());
+
+                            delegator.store(record);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            TransactionUtil.rollback(beganTransaction, e.getMessage(), e);
+                        } finally {
+                            TransactionUtil.commit(beganTransaction);
+                        }
                     }
                 } catch (GenericEntityException e) {
                     e.printStackTrace();
@@ -394,18 +328,10 @@ public class RptServices {
      * @return
      */
     public static Map<String, Object> queryReportFileUrl(DispatchContext dctx, Map<String, ? extends Object> context) {
-        LocalDispatcher dispatcher = dctx.getDispatcher();
         Delegator delegator = dctx.getDelegator();
 
         List<GenericValue> recordList = SemRptHelper.getQueryUrlRptRecords(delegator);
         if (UtilValidate.isNotEmpty(recordList)) {
-            GenericValue userLogin = null;
-            try {
-                userLogin = delegator.findOne("UserLogin", UtilMisc.toMap("userLoginId", "system"), true);
-            } catch (GenericEntityException e1) {
-                e1.printStackTrace();
-            }
-
             for (Iterator<GenericValue> iterator = recordList.iterator(); iterator.hasNext();) {
                 GenericValue record = iterator.next();
 
@@ -428,16 +354,20 @@ public class RptServices {
                         } else if (UtilValidate.areEqual("SM", channelId)) {
 
                         }
+                        boolean beganTransaction = false;
+                        try {
+                            beganTransaction = TransactionUtil.begin();
 
-                        ModelService updateSemRptRecordService = dispatcher.getDispatchContext().getModelService(
-                                "updateSemRptRecord");
-                        Map<String, Object> paramMap = FastMap.newInstance();
-                        paramMap.putAll(UtilMisc.toMap("recordId", record.getString("recordId"), "fileUrl", fileUrl,
-                                "fileUrlTime", UtilDateTime.nowTimestamp()));
-                        paramMap.put("userLogin", userLogin);
-                        Map<String, Object> updateSemRptRecordMap = updateSemRptRecordService.makeValid(paramMap,
-                                ModelService.IN_PARAM);
-                        dispatcher.runSync(updateSemRptRecordService.name, updateSemRptRecordMap);
+                            record.set("fileUrl", fileUrl);
+                            record.set("fileUrlTime", UtilDateTime.nowTimestamp());
+
+                            delegator.store(record);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            TransactionUtil.rollback(beganTransaction, e.getMessage(), e);
+                        } finally {
+                            TransactionUtil.commit(beganTransaction);
+                        }
                     }
                 } catch (GenericEntityException e) {
                     e.printStackTrace();
@@ -459,7 +389,6 @@ public class RptServices {
      */
     public static Map<String, Object> processingNotFinishedReports(DispatchContext dctx,
             Map<String, ? extends Object> context) {
-        LocalDispatcher dispatcher = dctx.getDispatcher();
         Delegator delegator = dctx.getDelegator();
 
         List<GenericValue> recordList = SemRptHelper.getNotFinishedRptRecords(delegator);
@@ -479,7 +408,6 @@ public class RptServices {
                     GenericValue acct = delegator.findOne("SemAccount", UtilMisc.toMap("accountId", accountId), false);
                     if (UtilValidate.isNotEmpty(acct)) {
                         String channelId = acct.getString("channelId");
-                        String reportId = record.getString("reportId");
                         Date rptDate = record.getDate("rptDate");
                         String fileUrl = record.getString("fileUrl");
                         String rptTypeId = record.getString("rptTypeId");
@@ -494,14 +422,17 @@ public class RptServices {
 
                         }
                         if (finished) {
-                            ModelService updateSemRptRecordService = dispatcher.getDispatchContext().getModelService(
-                                    "updateSemRptRecord");
-                            Map<String, Object> paramMap = FastMap.newInstance();
-                            paramMap.putAll(UtilMisc.toMap("recordId", record.getString("recordId"), "isFinished", "1"));
-                            paramMap.put("userLogin", userLogin);
-                            Map<String, Object> updateSemRptRecordMap = updateSemRptRecordService.makeValid(paramMap,
-                                    ModelService.IN_PARAM);
-                            dispatcher.runSync(updateSemRptRecordService.name, updateSemRptRecordMap);
+                            boolean beganTransaction = false;
+                            try {
+                                beganTransaction = TransactionUtil.begin();
+                                record.set("isFinished", "1");
+                                delegator.store(record);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                TransactionUtil.rollback(beganTransaction, e.getMessage(), e);
+                            } finally {
+                                TransactionUtil.commit(beganTransaction);
+                            }
                         }
                     }
                 } catch (GenericEntityException e) {
