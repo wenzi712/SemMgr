@@ -70,6 +70,7 @@
         <attribute name="accountId" type="String" mode="IN" optional="false" />
         <attribute name="rptDate" type="java.sql.Date" mode="IN" optional="false" />
         <attribute name="rptId" type="String" mode="OUT" optional="false" />
+        <attribute name="unitName" type="String" mode="IN" allow-html="any" />
     </service>
     <service name="updateSemKeyWordRpt" engine="entity-auto" invoke="update" default-entity-name="SemKeyWordRpt"
         auth="true">

@@ -199,7 +199,7 @@
         <field name="unitId" type="id">
             <description>推广单元ID</description>
         </field>
-        <field name="UnitName" type="name">
+        <field name="unitName" type="name">
             <description>推广单元</description>
         </field>
         <field name="keyWordId" type="id">
