@@ -9,7 +9,6 @@
 package com.yhsem.common;
 
 import java.sql.Date;
-import java.sql.Timestamp;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -55,7 +54,7 @@ public class RptServices {
     public static Map<String, Object> getDailyReport(DispatchContext dctx, Map<String, ? extends Object> context) {
         LocalDispatcher dispatcher = dctx.getDispatcher();
         Delegator delegator = dctx.getDelegator();
-        Date rptDate = new Date(UtilDateTime.nowDate().getTime());
+        Date rptDate = new Date(UtilDateTime.getDayStart(UtilDateTime.nowTimestamp(), -1).getTime());
 
         // 获取所有可用账户
         List<GenericValue> acctList = SemBaseHelper.getAllValidAccount(delegator);
@@ -199,8 +198,6 @@ public class RptServices {
                 GenericValue record = iterator.next();
 
                 Date rptDate = record.getDate("rptDate");
-                Timestamp startDate = UtilDateTime.getDayStart(UtilDateTime.getTimestamp(rptDate.getTime()), -1);
-                Timestamp endDate = UtilDateTime.getDayStart(UtilDateTime.getTimestamp(rptDate.getTime()));
                 try {
                     String accountId = record.getString("accountId");
 
@@ -215,15 +212,15 @@ public class RptServices {
 
                             if (UtilValidate.areEqual("REGION", record.getString("rptTypeId"))) {// 区域报表
                                 if (UtilValidate.areEqual("0", record.getString("infoFlow"))) {
-                                    reportId = report.getRegionReportId(delegator, startDate, endDate, true);
+                                    reportId = report.getRegionReportId(delegator, rptDate, rptDate, true);
                                 } else {
-                                    reportId = report.getRegionReportId(delegator, startDate, endDate, false);
+                                    reportId = report.getRegionReportId(delegator, rptDate, rptDate, false);
                                 }
                             } else {// 关键词报告
                                 if (UtilValidate.areEqual("0", record.getString("infoFlow"))) {
-                                    reportId = report.getKeywordReportId(delegator, startDate, endDate, true);
+                                    reportId = report.getKeywordReportId(delegator, rptDate, rptDate, true);
                                 } else {
-                                    reportId = report.getKeywordReportId(delegator, startDate, endDate, false);
+                                    reportId = report.getKeywordReportId(delegator, rptDate, rptDate, false);
                                 }
                             }
                         } else if (UtilValidate.areEqual("SG", channelId)) {

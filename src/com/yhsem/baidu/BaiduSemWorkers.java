@@ -111,7 +111,56 @@ public class BaiduSemWorkers {
     }
 
     public static boolean processingKeywordReport(DispatchContext dctx, GenericValue userLogin, String accountId,
-            Date rptDate, String fileUrl) throws IOException {
+            Date rptDate, String fileUrl) throws IOException, GenericServiceException, GenericEntityException {
+        LocalDispatcher dispatcher = dctx.getDispatcher();
+        Delegator delegator = dctx.getDelegator();
+
+        List<GenericValue> recordList = delegator.findByAnd("SemKeyWordRpt",
+                UtilMisc.toMap("accountId", accountId, "rptDate", rptDate), null, false);
+        if (UtilValidate.isEmpty(recordList)) {
+            byte[] b = DownloadUtil.downloadFile(fileUrl);
+            CSVReader c = new CSVReader(new StringReader(new String(b, "GBK")), '\t');
+            String[] nextLine;
+            int n = 0;
+            while ((nextLine = c.readNext()) != null) {
+                n++;
+                if (n > 1) {
+                    String rptId = delegator.getNextSeqId("SemKeyWordRpt");
+
+                    ModelService createSemKeyWordRptService = dispatcher.getDispatchContext().getModelService(
+                            "createSemKeyWordRpt");
+                    Map<String, Object> paramMap = FastMap.newInstance();
+
+                    paramMap.put("rptId", rptId);
+                    paramMap.put("accountId", accountId);
+                    paramMap.put("rptDate", rptDate);
+                    paramMap.put("planId", nextLine[3]);
+                    paramMap.put("planName", nextLine[4]);
+                    paramMap.put("unitId", nextLine[5]);
+                    paramMap.put("unitName", nextLine[6]);
+                    paramMap.put("keyWordId", nextLine[7]);
+                    paramMap.put("keyWord", nextLine[8]);
+
+                    paramMap.put("impression", Long.valueOf(nextLine[9]));
+                    paramMap.put("click", Long.valueOf(nextLine[10]));
+                    paramMap.put("cost", new BigDecimal(nextLine[11]));
+                    String ctr = nextLine[12].replace("%", "");
+                    paramMap.put("ctr", Double.valueOf(ctr) / 100);
+                    paramMap.put("cpc", new BigDecimal(nextLine[13]));
+                    paramMap.put("cpm", new BigDecimal(nextLine[14]));
+                    paramMap.put("position", Double.valueOf(nextLine[16]));
+                    paramMap.put("conversion", new BigDecimal(nextLine[15]));
+                    paramMap.put("bridgeConversion", BigDecimal.ZERO);
+                    paramMap.put("locatingMethod", null);
+
+                    paramMap.put("userLogin", userLogin);
+                    Map<String, Object> createSemKeyWordRptMap = createSemKeyWordRptService.makeValid(paramMap,
+                            ModelService.IN_PARAM);
+                    dispatcher.runSync(createSemKeyWordRptService.name, createSemKeyWordRptMap);
+                }
+            }
+            c.close();
+        }
         return true;
     }
 }
