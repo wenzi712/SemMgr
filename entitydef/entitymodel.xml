@@ -8,6 +8,10 @@
     <copyright></copyright>
     <version></version>
 
+    <!-- ========================================================= -->
+    <!-- com.yh.sem.word -->
+    <!-- ========================================================= -->
+
     <entity entity-name="SemWordType" package-name="com.yh.sem.word" title="词类表">
         <field name="wordTypeId" type="id-ne">
             <description>词类ID</description>
@@ -18,7 +22,6 @@
 
         <prim-key field="wordTypeId" />
     </entity>
-    
 
     <entity entity-name="SemKeyWord" package-name="com.yh.sem.word" title="词类明细表">
         <field name="keyWordId" type="id-ne">
@@ -32,232 +35,258 @@
         </field>
 
         <prim-key field="keyWordId" />
+
         <relation rel-entity-name="SemWordType" type="one">
             <key-map field-name="wordTypeId" />
         </relation>
     </entity>
-	<entity entity-name="SemRegion" package-name="com.yh.sem.region" title="sem区域表">
-	  	<field name="regionId" type="id-ne">
-	   		<description>区域ID</description>
-	  	</field>
-	  	<field name="regionName" type="name">
-	   		<description>区域名称</description> 
-	  	</field>
-	  	<field name="parentId" type="id">
-	   		<description>上级ID</description>
-	  	</field>
-	  	<field name="levelId" type="name">
-	   		<description>区域级别</description>
-	  	</field>
-	   		
-	   	<prim-key field="regionId"/>
-   </entity>
-   <entity entity-name="SemChannel" package-name="com.yh.sem.channel" title="sem渠道表">
-   		<field name="channelId" type="id-ne">
-   			<description>渠道ID</description>
-   		</field>
-   		<field name="channelName" type="name">
-   			<description>渠道名称</description>
-   		</field>
-   		<field name="valid" type="indicator">
-   			<description>是否有效</description>
-   		</field>
-   		
-   		<prim-key field="channelId"/>
-   </entity>
-   
-   <entity entity-name="SemAccount" package-name="com.yh.sem.account" title="sem账号表">
-   		<field name="accountId" type="id-ne">
-   			<description>账户ID</description>
-   		</field>
-   		<field name="accountName" type="name">
-   			<description>账户名称</description>
-   		</field>
-   		<field name="accountPwd" type="short-varchar">
-   			<description>账户密码</description>
-   		</field>
-   		<field name="accountToken" type="comment">
-   			<description>账户Token</description>
-   		</field>
-   		<field name="channelId" type="id">
-   			<description>渠道ID</description>
-   		</field>
-   		<field name="valid" type="indicator">
-   			<description>是否有效</description>
-   		</field>
-   		<field name="infoFlow" type="indicator">
-   			<description>是否开启信息流</description>
-   		</field>
-   		
-   		<prim-key field="accountId"/>
-   		
-   		<relation rel-entity-name="SemChannel" type="one">
+
+    <!-- ========================================================= -->
+    <!-- com.yh.sem.region -->
+    <!-- ========================================================= -->
+    <entity entity-name="SemRegion" package-name="com.yh.sem.region" title="sem区域表">
+        <field name="regionId" type="id-ne">
+            <description>区域ID</description>
+        </field>
+        <field name="regionName" type="name">
+            <description>区域名称</description>
+        </field>
+        <field name="parentId" type="id">
+            <description>上级ID</description>
+        </field>
+        <field name="levelId" type="short-varchar">
+            <description>区域级别</description>
+        </field>
+
+        <prim-key field="regionId" />
+    </entity>
+
+    <!-- ========================================================= -->
+    <!-- com.yh.sem.account -->
+    <!-- ========================================================= -->
+    <entity entity-name="SemChannel" package-name="com.yh.sem.account" title="sem账户渠道表">
+        <field name="channelId" type="id-ne">
+            <description>渠道ID</description>
+        </field>
+        <field name="channelName" type="name">
+            <description>渠道名称</description>
+        </field>
+        <field name="valid" type="indicator">
+            <description>是否有效</description>
+            <!-- [1:是; 0:否] -->
+        </field>
+
+        <prim-key field="channelId" />
+    </entity>
+
+    <entity entity-name="SemAccount" package-name="com.yh.sem.account" title="sem账号表">
+        <field name="accountId" type="id-ne">
+            <description>账户ID</description>
+        </field>
+        <field name="accountName" type="name">
+            <description>账户名称</description>
+        </field>
+        <field name="accountPwd" type="short-varchar" encrypt="true">
+            <description>账户密码</description>
+        </field>
+        <field name="accountToken" type="short-varchar">
+            <description>账户Token</description>
+        </field>
+        <field name="channelId" type="id">
+            <description>渠道ID</description>
+        </field>
+        <field name="valid" type="indicator">
+            <description>是否有效</description>
+            <!-- [1:是; 0:否] -->
+        </field>
+        <field name="infoFlow" type="indicator">
+            <description>是否开启信息流</description>
+            <!-- [1:是; 0:否] -->
+        </field>
+
+        <prim-key field="accountId" />
+
+        <relation rel-entity-name="SemChannel" type="one">
             <key-map field-name="channelId" />
         </relation>
-   </entity>
-   
-   <entity entity-name="SemRegionRpt" package-name="com.yh.sem.region" title="区域报表">
-   		<field name="rptId" type="id-ne">
-   			<description>报表ID</description>
-   		</field>
-   		<field name="rptDate" type="date-time">
-   			<description>报表日期</description>
-   		</field>
-   		<field name="accountId" type="id">
-   			<description>账号ID</description>
-   		</field>
-   		<field name="regionId" type="id">
-   			<description>省级区域ID</description>
-   		</field>
-   		<field name="regionName" type="name">
-   			<description>省级区域</description>
-   		</field>
-   		<field name="cityId" type="id">
-   			<description>城市ID</description>
-   		</field>
-   		<field name="cityName" type="name">
-   			<description>城市</description>
-   		</field>
-   		<field name="impression" type="very-short">
-   			<description>展现量</description>
-   		</field>
-   		<field name="click" type="very-short">
-   			<description>点击量</description>
-   		</field>
-   		<field name="cost" type="currency-precise">
-   			<description>消费</description>
-   		</field>
-   		<field name="ctr" type="floating-point">
-   			<description>点击率</description>
-   		</field>
-   		<field name="cpc" type="currency-precise">
-   			<description>平均点击价格</description>
-   		</field>
-   		<field name="cpm" type="currency-precise">
-   			<description>千次展现消费</description>
-   		</field>
-   		<field name="position" type="floating-point">
-   			<description>平均排名</description>
-   		</field>
-   		<field name="conversion" type="floating-point">
-   			<description>网页转化</description>
-   		</field>
-   		<field name="bridgeConversion" type="floating-point">
-   			<description>商桥转化</description>
-   		</field>
-   		<field name="locatingMethod" type="very-short">
-   			<description>定位方式</description>
-   		</field>
-   		<field name="planId" type="id">
-   			<description>计划ID</description>
-   		</field>
-   		<field name="planName" type="name">
-   			<description>计划名称</description>
-   		</field>
-   		
-   		<prim-key field="rptId"/>
-   		<relation rel-entity-name="SemAccount" type="one">
+    </entity>
+
+    <!-- ========================================================= -->
+    <!-- com.yh.sem.report -->
+    <!-- ========================================================= -->
+    <entity entity-name="SemRegionRpt" package-name="com.yh.sem.report" title="区域日报">
+        <field name="rptId" type="id-ne">
+            <description>报表ID</description>
+        </field>
+        <field name="rptDate" type="date">
+            <description>报表日期</description>
+        </field>
+        <field name="accountId" type="id">
+            <description>账号ID</description>
+        </field>
+        <field name="regionId" type="id">
+            <description>省级区域ID</description>
+        </field>
+        <field name="regionName" type="name">
+            <description>省级区域</description>
+        </field>
+        <field name="cityId" type="id">
+            <description>城市ID</description>
+        </field>
+        <field name="cityName" type="name">
+            <description>城市</description>
+        </field>
+        <field name="impression" type="numeric">
+            <description>展现量</description>
+        </field>
+        <field name="click" type="numeric">
+            <description>点击量</description>
+        </field>
+        <field name="cost" type="currency-amount">
+            <description>消费</description>
+        </field>
+        <field name="ctr" type="floating-point">
+            <description>点击率</description>
+        </field>
+        <field name="cpc" type="currency-amount">
+            <description>平均点击价格</description>
+        </field>
+        <field name="cpm" type="currency-amount">
+            <description>千次展现消费</description>
+        </field>
+        <field name="position" type="numeric">
+            <description>平均排名</description>
+        </field>
+        <field name="conversion" type="currency-amount">
+            <description>网页转化</description>
+        </field>
+        <field name="bridgeConversion" type="currency-amount">
+            <description>商桥转化</description>
+        </field>
+        <field name="locatingMethod" type="very-short">
+            <description>定位方式</description>
+        </field>
+        <field name="planId" type="id">
+            <description>计划ID</description>
+        </field>
+        <field name="planName" type="name">
+            <description>计划名称</description>
+        </field>
+
+        <prim-key field="rptId" />
+
+        <relation rel-entity-name="SemAccount" type="one">
             <key-map field-name="accountId" />
         </relation>
-   </entity>
-   <entity entity-name="SemKeyWords" package-name="com.yh.sem.region" title="关键词日报">
-   		<field name="rptId" type="id-ne">
-   			<description>报表ID</description>
-   		</field>
-   		<field name="rptDate" type="date-time">
-   			<description>报表日期</description>
-   		</field>
-   		<field name="accountId" type="id">
-   			<description>账号ID</description>
-   		</field>
-   		<field name="planId" type="id">
-   			<description>计划ID</description>
-   		</field>
-   		<field name="planName" type="name">
-   			<description>计划名称</description>
-   		</field>
-   		<field name="unitId" type="id">
-   			<description>推广单元ID</description>
-   		</field>
-   		<field name="UnitName" type="name">
-   			<description>推广单元</description>
-   		</field>
-   		<field name="keyWordId" type="id">
-   			<description>关键词ID</description>
-   		</field>
-   		<field name="keyWord" type="name">
-   			<description>关键词</description>
-   		</field>
-   		<field name="impression" type="very-short">
-   			<description>展现量</description>
-   		</field>
-   		<field name="click" type="very-short">
-   			<description>点击量</description>
-   		</field>
-   		<field name="cost" type="currency-precise">
-   			<description>消费</description>
-   		</field>
-   		<field name="ctr" type="floating-point">
-   			<description>点击率</description>
-   		</field>
-   		<field name="cpc" type="currency-precise">
-   			<description>平均点击价格</description>
-   		</field>
-   		<field name="cpm" type="currency-precise">
-   			<description>千次展现消费</description>
-   		</field>
-   		<field name="position" type="floating-point">
-   			<description>平均排名</description>
-   		</field>
-   		<field name="conversion" type="floating-point">
-   			<description>网页转化</description>
-   		</field>
-   		<field name="wordTypeId" type="id">
-   			<description>词类ID</description>
-   		</field>
-   		
-   		<prim-key field="rptId"/>
-   		<relation rel-entity-name="SemWordType" type="one">
+    </entity>
+
+    <entity entity-name="SemKeyWordRpt" package-name="com.yh.sem.report" title="关键词日报">
+        <field name="rptId" type="id-ne">
+            <description>报表ID</description>
+        </field>
+        <field name="rptDate" type="date">
+            <description>报表日期</description>
+        </field>
+        <field name="accountId" type="id">
+            <description>账号ID</description>
+        </field>
+        <field name="planId" type="id">
+            <description>计划ID</description>
+        </field>
+        <field name="planName" type="name">
+            <description>计划名称</description>
+        </field>
+        <field name="unitId" type="id">
+            <description>推广单元ID</description>
+        </field>
+        <field name="UnitName" type="name">
+            <description>推广单元</description>
+        </field>
+        <field name="keyWordId" type="id">
+            <description>关键词ID</description>
+        </field>
+        <field name="keyWord" type="name">
+            <description>关键词</description>
+        </field>
+        <field name="impression" type="numeric">
+            <description>展现量</description>
+        </field>
+        <field name="click" type="numeric">
+            <description>点击量</description>
+        </field>
+        <field name="cost" type="currency-amount">
+            <description>消费</description>
+        </field>
+        <field name="ctr" type="floating-point">
+            <description>点击率</description>
+        </field>
+        <field name="cpc" type="currency-amount">
+            <description>平均点击价格</description>
+        </field>
+        <field name="cpm" type="currency-amount">
+            <description>千次展现消费</description>
+        </field>
+        <field name="position" type="numeric">
+            <description>平均排名</description>
+        </field>
+        <field name="conversion" type="currency-amount">
+            <description>网页转化</description>
+        </field>
+        <field name="wordTypeId" type="id">
+            <description>词类ID</description>
+        </field>
+
+        <prim-key field="rptId" />
+
+        <relation rel-entity-name="SemWordType" type="one">
             <key-map field-name="wordTypeId" />
         </relation>
-   </entity>
-   
-   <entity entity-name="SemRptRecord" package-name="com.yh.sem.record" title="报表台账">
-   		<field name="rptId" type="id-ne">
-   			<description>主键ID</description>
-   		</field>
-   		<field name="rptDate" type="date-time">
-   			<description>报表日期</description>
-   		</field>
-   		<field name="accountId" type="id">
-   			<description>账户ID</description>
-   		</field>
-   		<field name="rptTypeId" type="id">
-   			<description>报表类型</description>
-   		</field>
-   		<field name="requestTime" type="date-time">
-   			<description>请求时间</description>
-   		</field>
-   		<field name="reportId" type="id">
-   			<description>返回的报告ID</description>
-   		</field>
-   		<field name="statusTime" type="date-time">
-   			<description>状态查询时间</description>
-   		</field>
-   		<field name="statusId" type="id">
-   			<description>状态ID</description>
-   		</field>
-   		<field name="fileUrlTime" type="date-time">
-   			<description>文件获取时间</description>
-   		</field>
-   		<field name="fileUrl" type="url">
-   			<description>文件获取路径</description>
-   		</field>
-   		<field name="isFinished" type="indicator">
-   			<description>是否处理完毕</description>
-   		</field>
-   		<prim-key field="rptId"/>
-   </entity>
-   
+    </entity>
 
+    <!-- ========================================================= -->
+    <!-- com.yh.sem.record -->
+    <!-- ========================================================= -->
+    <entity entity-name="SemRptRecord" package-name="com.yh.sem.record" title="报表台账">
+        <field name="recordId" type="id-ne">
+            <description>主键ID</description>
+        </field>
+        <field name="rptDate" type="date">
+            <description>报表日期</description>
+        </field>
+        <field name="accountId" type="id">
+            <description>账户ID</description>
+        </field>
+        <field name="rptTypeId" type="id">
+            <description>报表类型</description>
+            <!-- [REGION:区域报表; KEYWORD:关键词报表] -->
+        </field>
+        <field name="infoFlow" type="indicator">
+            <description>是否百度信息流报告</description>
+            <!-- [0:否; 1:是] -->
+        </field>
+        <field name="requestTime" type="date-time">
+            <description>请求时间</description>
+        </field>
+        <field name="reportId" type="id-long">
+            <description>返回的报告ID</description>
+        </field>
+        <field name="statusTime" type="date-time">
+            <description>状态查询时间</description>
+        </field>
+        <field name="statusId" type="id">
+            <description>状态ID[1:等待中; 2:处理中; 3:处理成功]</description>
+        </field>
+        <field name="fileUrlTime" type="date-time">
+            <description>文件获取时间</description>
+        </field>
+        <field name="fileUrl" type="url">
+            <description>文件获取路径</description>
+        </field>
+        <field name="isFinished" type="indicator">
+            <description>是否处理完毕</description>
+            <!-- [1:是; 0:否] -->
+        </field>
+
+        <prim-key field="recordId" />
+    </entity>
 </entitymodel>
