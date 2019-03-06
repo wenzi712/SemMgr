@@ -238,6 +238,10 @@
 
         <prim-key field="rptId" />
 
+        <relation rel-entity-name="SemAccount" type="one">
+            <key-map field-name="accountId" />
+        </relation>
+
         <relation rel-entity-name="SemWordType" type="one">
             <key-map field-name="wordTypeId" />
         </relation>
@@ -288,5 +292,9 @@
         </field>
 
         <prim-key field="recordId" />
+
+        <relation rel-entity-name="SemAccount" type="one">
+            <key-map field-name="accountId" />
+        </relation>
     </entity>
 </entitymodel>
