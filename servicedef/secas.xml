@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<service-eca xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/service-eca.xsd">
+
+    <eca service="getDailyReport" event="return">
+        <action service="queryReportStatus" mode="async" persist="true" run-as-user="system" />
+    </eca>
+    <eca service="queryReportStatus" event="return">
+        <action service="queryReportFileUrl" mode="async" persist="true" run-as-user="system" />
+    </eca>
+    <eca service="queryReportFileUrl" event="return">
+        <action service="processingNotFinishedReports" mode="async" persist="true" run-as-user="system" />
+    </eca>
+
+</service-eca>

@@ -86,7 +86,7 @@
         <field name="accountName" type="name">
             <description>账户名称</description>
         </field>
-        <field name="accountPwd" type="short-varchar" encrypt="true">
+        <field name="accountPwd" type="long-varchar" encrypt="true">
             <description>账户密码</description>
         </field>
         <field name="accountToken" type="short-varchar">
@@ -154,7 +154,7 @@
         <field name="cpm" type="currency-amount">
             <description>千次展现消费</description>
         </field>
-        <field name="position" type="numeric">
+        <field name="position" type="floating-point">
             <description>平均排名</description>
         </field>
         <field name="conversion" type="currency-amount">
@@ -226,7 +226,7 @@
         <field name="cpm" type="currency-amount">
             <description>千次展现消费</description>
         </field>
-        <field name="position" type="numeric">
+        <field name="position" type="floating-point">
             <description>平均排名</description>
         </field>
         <field name="conversion" type="currency-amount">

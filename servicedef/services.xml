@@ -91,7 +91,8 @@
     <service name="updateSemRptRecord" engine="entity-auto" invoke="update" default-entity-name="SemRptRecord"
         auth="true">
         <description>Update a SemRptRecord</description>
+        <auto-attributes include="pk" mode="IN" optional="false" />
         <auto-attributes include="nonpk" mode="IN" optional="true" />
-        <attribute name="recordId" type="String" mode="INOUT" optional="false" />
+        <attribute name="recordId" type="String" mode="OUT" optional="false" />
     </service>
 </services>

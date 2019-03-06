@@ -9,7 +9,6 @@
 package com.yhsem.baidu;
 
 import java.io.StringReader;
-import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -79,9 +78,8 @@ public class ReportInstance {
      * @throws Exception
      */
     public String getRegionReportId(Delegator delegator, boolean infoFlow) throws Exception {
-        Timestamp startDate = UtilDateTime.getDayStart(UtilDateTime.nowTimestamp(), -1);
-        Timestamp endDate = UtilDateTime.getDayStart(UtilDateTime.nowTimestamp());
-        return getRegionReportId(delegator, startDate, endDate, infoFlow);
+        return getRegionReportId(delegator, UtilDateTime.getDayStart(UtilDateTime.nowTimestamp(), -1),
+                UtilDateTime.getDayStart(UtilDateTime.nowTimestamp(), -1), infoFlow);
     }
 
     /**
@@ -99,34 +97,38 @@ public class ReportInstance {
      */
     public String getRegionReportId(Delegator delegator, Date startDate, Date endDate, boolean infoFlow)
             throws Exception {
-        String reportId = "";
+        String reportId = null;
         GetProfessionalReportIdRequest request = new GetProfessionalReportIdRequest();
 
-        ReportRequestType type = new ReportRequestType();
-        List<String> performanceData = Arrays.asList(new String[] { "cost", "cpc", "click", "impression", "ctr", "cpm",
-                "position", "conversion" });
-        type.setPerformanceData(performanceData);
-        type.setLevelOfDetails(2);
-        type.setUnitOfTime(5);
-        type.setReportType(5);
-        type.setStartDate(startDate);
-        type.setEndDate(endDate);
-        if (infoFlow) {
-            type.setPlatform(23);// 信息流
-        }
+        try {
+            ReportRequestType type = new ReportRequestType();
+            List<String> performanceData = Arrays.asList(new String[] { "cost", "cpc", "click", "impression", "ctr",
+                    "cpm", "position", "conversion" });
+            type.setPerformanceData(performanceData);
+            type.setLevelOfDetails(2);
+            type.setUnitOfTime(5);
+            type.setReportType(5);
+            type.setStartDate(startDate);
+            type.setEndDate(endDate);
+            if (infoFlow) {
+                type.setPlatform(23);// 信息流
+            }
 
-        request.setReportRequestType(type);
-        GetProfessionalReportIdResponse response = reportService.getProfessionalReportId(request);
+            request.setReportRequestType(type);
+            GetProfessionalReportIdResponse response = reportService.getProfessionalReportId(request);
 
-        if (response != null) {
-            List<GetProfessionalReportIdData> datas = response.getData();
-            if (datas != null) {
-                System.out.println("response.getData() : " + datas);
-                ResHeader rheader = ResHeaderUtil.getResHeader(reportService, true);
-                if (SUCCESS.equals(rheader.getDesc()) && rheader.getStatus() == 0) {
-                    reportId = datas.get(0).getReportId();
+            if (response != null) {
+                List<GetProfessionalReportIdData> datas = response.getData();
+                if (datas != null) {
+                    System.out.println("response.getData() : " + datas);
+                    ResHeader rheader = ResHeaderUtil.getResHeader(reportService, true);
+                    if (SUCCESS.equals(rheader.getDesc()) && rheader.getStatus() == 0) {
+                        reportId = datas.get(0).getReportId();
+                    }
                 }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         System.out.println(reportId);
@@ -141,10 +143,8 @@ public class ReportInstance {
      * @throws Exception
      */
     public String getKeywordReportId(Delegator delegator, boolean infoFlow) throws Exception {
-        Timestamp startDate = UtilDateTime.getDayStart(UtilDateTime.nowTimestamp(), -1);
-        Timestamp endDate = UtilDateTime.getDayStart(UtilDateTime.nowTimestamp());
-
-        return getKeywordReportId(delegator, startDate, endDate, infoFlow);
+        return getKeywordReportId(delegator, UtilDateTime.getDayStart(UtilDateTime.nowTimestamp(), -1),
+                UtilDateTime.getDayStart(UtilDateTime.nowTimestamp(), -1), infoFlow);
     }
 
     /**
@@ -162,34 +162,38 @@ public class ReportInstance {
      */
     public String getKeywordReportId(Delegator delegator, Date startDate, Date endDate, boolean infoFlow)
             throws Exception {
-        String reportId = "";
+        String reportId = null;
         GetProfessionalReportIdRequest request = new GetProfessionalReportIdRequest();
 
-        ReportRequestType type = new ReportRequestType();
-        List<String> performanceData = Arrays.asList(new String[] { "cost", "cpc", "click", "impression", "ctr", "cpm",
-                "position", "conversion" });
-        type.setPerformanceData(performanceData);
-        type.setLevelOfDetails(6);
-        type.setUnitOfTime(5);
-        type.setReportType(9);
-        type.setStartDate(startDate);
-        type.setEndDate(endDate);
-        if (infoFlow) {
-            type.setPlatform(23);// 信息流
-        }
+        try {
+            ReportRequestType type = new ReportRequestType();
+            List<String> performanceData = Arrays.asList(new String[] { "cost", "cpc", "click", "impression", "ctr",
+                    "cpm", "position", "conversion" });
+            type.setPerformanceData(performanceData);
+            type.setLevelOfDetails(6);
+            type.setUnitOfTime(5);
+            type.setReportType(9);
+            type.setStartDate(startDate);
+            type.setEndDate(endDate);
+            if (infoFlow) {
+                type.setPlatform(23);// 信息流
+            }
 
-        request.setReportRequestType(type);
-        GetProfessionalReportIdResponse response = reportService.getProfessionalReportId(request);
+            request.setReportRequestType(type);
+            GetProfessionalReportIdResponse response = reportService.getProfessionalReportId(request);
 
-        if (response != null) {
-            List<GetProfessionalReportIdData> datas = response.getData();
-            if (datas != null) {
-                System.out.println("response.getData() : " + datas);
-                ResHeader rheader = ResHeaderUtil.getResHeader(reportService, true);
-                if (SUCCESS.equals(rheader.getDesc()) && rheader.getStatus() == 0) {
-                    reportId = datas.get(0).getReportId();
+            if (response != null) {
+                List<GetProfessionalReportIdData> datas = response.getData();
+                if (datas != null) {
+                    System.out.println("response.getData() : " + datas);
+                    ResHeader rheader = ResHeaderUtil.getResHeader(reportService, true);
+                    if (SUCCESS.equals(rheader.getDesc()) && rheader.getStatus() == 0) {
+                        reportId = datas.get(0).getReportId();
+                    }
                 }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         System.out.println(reportId);

@@ -41,7 +41,10 @@ public class SemRptHelper {
      */
     public static List<GenericValue> getFailureRequestRptRecords(Delegator delegator) {
         try {
-            EntityCondition ec = EntityCondition.makeCondition("reportId", EntityOperator.EQUALS, null);
+            EntityCondition ec1 = EntityCondition.makeCondition("reportId", EntityOperator.EQUALS, null);
+            EntityCondition ec2 = EntityCondition.makeCondition("reportId", EntityOperator.EQUALS, "");
+            EntityCondition ec = EntityCondition.makeCondition(UtilMisc.toList(ec1, ec2), EntityOperator.OR);
+
             return delegator.findList("SemRptRecord", ec, null, UtilMisc.toList("requestTime"), null, false);
         } catch (GenericEntityException e) {
             e.printStackTrace();
