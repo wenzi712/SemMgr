@@ -5,23 +5,24 @@
         <field name="noConditionFind">
             <hidden value="Y" />
         </field>
-        <field name="accountName" title="账户名称">
-            <text-find />
+        <field name="accountName" title="账户名称" position="1">
+            <text-find default-option="contains" hide-options="true" />
         </field>
-        <field name="channelId" title="账户渠道">
+        <field name="channelId" title="账户渠道" position="1" separate-column="true">
             <drop-down allow-empty="true" current-description="">
                 <entity-options description="${channelName}" key-field-name="channelId" entity-name="SemChannel">
-                    <entity-order-by field-name="channelName" />
+                    <entity-order-by field-name="channelId" />
                 </entity-options>
             </drop-down>
         </field>
-        <field name="valid" title="账户状态">
+        <field name="valid" title="账户状态" position="1">
             <drop-down allow-empty="true" current-description="">
                 <option key="1" description="正常" />
                 <option key="0" description="禁用" />
             </drop-down>
         </field>
-        <field name="searchButton" title="${uiLabelMap.CommonFind}" widget-style="smallSubmit">
+
+        <field name="searchButton" title="${uiLabelMap.CommonFind}" widget-style="smallSubmit" position="1">
             <submit button-type="button" image-location="/images/icons/magnifier.png" />
         </field>
     </form>
@@ -61,45 +62,54 @@
         </field>
     </form>
 
-    <form name="EditSemAccount" type="single" target="updateSemAccount" title="" default-map-name="account"
+    <form name="EditSemAccount" type="single" target="updateSemAccount" title="EditSemAccount" default-map-name="account"
         default-entity-name="SemAccount">
         <alt-target use-when="account==null" target="createSemAccount" />
 
         <field name="accountId">
             <hidden />
         </field>
+        <field name="accountId" use-when="account==null">
+            <hidden value="${groovy: delegator.getNextSeqId(&quot;SemAccount&quot;)}" />
+        </field>
         <field name="channelId" title="账户渠道" required-field="true" widget-style="required">
             <drop-down allow-empty="false">
                 <entity-options entity-name="SemChannel" description="${channelName}">
-                    <entity-order-by field-name="channelName" />
+                    <entity-order-by field-name="channelId" />
                 </entity-options>
             </drop-down>
         </field>
+        <field name="channelId" use-when="account!=null" title="账户渠道" widget-style="label">
+            <display-entity entity-name="SemChannel" description="${channelName}" />
+        </field>
         <field name="accountName" title="账户名称" required-field="true" widget-style="required">
-            <text placeholder="请输入账户名称" maxlength="30" size="30" />
+            <text placeholder="请输入账户名称" maxlength="30" size="30" client-autocomplete-field="false" />
+        </field>
+        <field name="accountName" use-when="account!=null" title="账户名称" widget-style="label">
+            <display />
         </field>
         <field name="accountPwd" title="账户密码">
             <password client-autocomplete-field="false" maxlength="50" size="50" />
         </field>
         <field name="accountToken" title="App Token Id">
-            <text placeholder="请输入 App Token Id" maxlength="50" size="50" />
+            <text placeholder="请输入 App Token Id" maxlength="50" size="50" client-autocomplete-field="false" />
         </field>
         <field name="valid" title="状态">
-            <drop-down allow-empty="true" no-current-selected-key="1">
+            <drop-down no-current-selected-key="1">
                 <option key="1" description="正常" />
                 <option key="0" description="禁用" />
             </drop-down>
         </field>
         <field name="infoFlow" title="开启百度信息流">
-            <drop-down allow-empty="false" no-current-selected-key="0">
+            <drop-down no-current-selected-key="0">
                 <option key="0" description="否" />
                 <option key="1" description="是" />
             </drop-down>
         </field>
-        <field name="submitButton" use-when="example==null" title="${uiLabelMap.CommonCreate}">
+        <field name="submitButton" use-when="account==null" title="${uiLabelMap.CommonCreate}">
             <submit button-type="button" />
         </field>
-        <field name="submitButton" use-when="example!=null" title="${uiLabelMap.CommonUpdate}">
+        <field name="submitButton" use-when="account!=null" title="${uiLabelMap.CommonUpdate}">
             <submit button-type="button" />
         </field>
     </form>

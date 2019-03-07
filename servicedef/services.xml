@@ -42,8 +42,11 @@
     </service>
     <service name="updateSemAccount" engine="entity-auto" invoke="update" default-entity-name="SemAccount" auth="true">
         <description>Update a SemAccount</description>
-        <auto-attributes include="nonpk" mode="IN" optional="true" />
-        <attribute name="channelId" type="String" mode="INOUT" optional="false" />
+        <auto-attributes include="pk" mode="IN" optional="false" />
+        <auto-attributes include="nonpk" mode="IN" optional="true">
+            <exclude field-name="accountName"/>
+            <exclude field-name="channelId"/>
+        </auto-attributes>
     </service>
 
     <!-- SemRegionRpt services -->
