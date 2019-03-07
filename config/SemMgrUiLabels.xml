@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/ofbiz-properties.xsd">
     <property key="SemMgrApplication">
-        <value xml:lang="en">SemMgr Application</value>
-        <value xml:lang="zh">SemMgr应用程序</value>
+        <value xml:lang="en">Sem Manage Application</value>
+        <value xml:lang="zh">搜索引擎营销数据平台</value>
     </property>
     <property key="SemMgrCompanyName">
         <value xml:lang="en">OFBiz: SemMgr</value>

@@ -1,6 +1,107 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-form.xsd">
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-form.xsd">
 
+    <form name="FindSemAccounts" type="single" target="FindSemAccount" default-entity-name="SemAccount">
+        <field name="noConditionFind">
+            <hidden value="Y" />
+        </field>
+        <field name="accountName" title="账户名称">
+            <text-find />
+        </field>
+        <field name="channelId" title="账户渠道">
+            <drop-down allow-empty="true" current-description="">
+                <entity-options description="${channelName}" key-field-name="channelId" entity-name="SemChannel">
+                    <entity-order-by field-name="channelName" />
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="valid" title="账户状态">
+            <drop-down allow-empty="true" current-description="">
+                <option key="1" description="正常" />
+                <option key="0" description="禁用" />
+            </drop-down>
+        </field>
+        <field name="searchButton" title="${uiLabelMap.CommonFind}" widget-style="smallSubmit">
+            <submit button-type="button" image-location="/images/icons/magnifier.png" />
+        </field>
+    </form>
+
+    <form name="ListSemAccounts" type="list" list-name="listIt" paginate-target="FindSemAccount"
+        default-entity-name="SemAccount" separate-columns="true" odd-row-style="alternate-row" header-row-style="header-row-2"
+        default-table-style="basic-table hover-bar">
+        <actions>
+            <service service-name="performFind" result-map="result" result-map-list="listIt">
+                <field-map field-name="inputFields" from-field="accountCtx" />
+                <field-map field-name="entityName" value="SemAccount" />
+                <field-map field-name="orderBy" from-field="parameters.sortField" />
+                <field-map field-name="viewIndex" from-field="viewIndex" />
+                <field-map field-name="viewSize" from-field="viewSize" />
+            </service>
+        </actions>
+        <field name="accountId" title="操作" widget-style="buttontext">
+            <hyperlink also-hidden="false" description="编辑" target="EditSemAccount">
+                <parameter param-name="accountId" />
+            </hyperlink>
+        </field>
+        <field name="accountName" title="账户名称">
+            <display />
+        </field>
+        <field name="channelId" title="账户渠道" sort-field="true">
+            <display-entity entity-name="SemChannel" description="${channelName}" />
+        </field>
+
+        <field name="valid" title="状态" sort-field="true">
+            <display description="${groovy: return valid.equals(&quot;1&quot;) ? &quot;正常&quot;: &quot;禁用&quot;}" />
+        </field>
+        <field name="infoFlow" title="开启百度信息流">
+            <display description="${groovy: infoFlow.equals(&quot;1&quot;) ? &quot;是&quot;: &quot;否&quot;}" />
+        </field>
+        <field name="accountToken" title="App Token">
+            <display />
+        </field>
+    </form>
+
+    <form name="EditSemAccount" type="single" target="updateSemAccount" title="" default-map-name="account"
+        default-entity-name="SemAccount">
+        <alt-target use-when="account==null" target="createSemAccount" />
+
+        <field name="accountId">
+            <hidden />
+        </field>
+        <field name="channelId" title="账户渠道" required-field="true" widget-style="required">
+            <drop-down allow-empty="false">
+                <entity-options entity-name="SemChannel" description="${channelName}">
+                    <entity-order-by field-name="channelName" />
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="accountName" title="账户名称" required-field="true" widget-style="required">
+            <text placeholder="请输入账户名称" maxlength="30" size="30" />
+        </field>
+        <field name="accountPwd" title="账户密码">
+            <password client-autocomplete-field="false" maxlength="50" size="50" />
+        </field>
+        <field name="accountToken" title="App Token Id">
+            <text placeholder="请输入 App Token Id" maxlength="50" size="50" />
+        </field>
+        <field name="valid" title="状态">
+            <drop-down allow-empty="true" no-current-selected-key="1">
+                <option key="1" description="正常" />
+                <option key="0" description="禁用" />
+            </drop-down>
+        </field>
+        <field name="infoFlow" title="开启百度信息流">
+            <drop-down allow-empty="false" no-current-selected-key="0">
+                <option key="0" description="否" />
+                <option key="1" description="是" />
+            </drop-down>
+        </field>
+        <field name="submitButton" use-when="example==null" title="${uiLabelMap.CommonCreate}">
+            <submit button-type="button" />
+        </field>
+        <field name="submitButton" use-when="example!=null" title="${uiLabelMap.CommonUpdate}">
+            <submit button-type="button" />
+        </field>
+    </form>
 
 </forms>
