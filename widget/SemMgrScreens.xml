@@ -1,24 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-screen.xsd">
-
-    <screen name="main">
-        <section>
-            <actions>
-                <set field="headerItem" value="main" /><!-- this highlights the selected menu-item with name "main" -->
-            </actions>
-            <widgets>
-                <decorator-screen name="SemMgrCommonDecorator" location="${parameters.mainDecoratorLocation}">
-                    <decorator-section name="body">
-                    </decorator-section>
-                </decorator-screen>
-            </widgets>
-        </section>
-    </screen>
-    
     <!-- list all examples in a tabular format -->
     <screen name="FindSemAccount">
         <section>
             <actions>
+                <property-map resource="SemMgrUiLabels" map-name="uiLabelMap" global="true" />
+                <property-map resource="CommonUiLabels" map-name="uiLabelMap" global="true" />
                 <set field="headerItem" value="SemAccountMenuItem" />
                 <set field="titleProperty" value="PageTitleFindSemAccount" />
                 <set field="accountCtx" from-field="parameters" />
@@ -34,8 +21,8 @@
                                 <decorator-screen name="FindScreenDecorator" location="component://common/widget/CommonScreens.xml">
                                     <decorator-section name="menu-bar">
                                         <container style="button-bar">
-                                            <link target="EditSemAccountLayer" link-type="ajax-window" height="500"
-                                                width="500" text="新建账号" style="buttontext create" />
+                                            <link target="EditSemAccountLayer" link-type="ajax-window" 
+                                                height="350" width="500" text="${uiLabelMap.ButtonNewAccount}" style="buttontext create" />
                                         </container>
                                     </decorator-section>
                                     <decorator-section name="search-options">
@@ -61,7 +48,6 @@
             <actions>
                 <property-map resource="SemMgrUiLabels" map-name="uiLabelMap" global="true" />
                 <property-map resource="CommonUiLabels" map-name="uiLabelMap" global="true" />
-                <set field="titleProperty" value="WW" />
                 <set field="accountId" from-field="parameters.accountId" />
                 <entity-one entity-name="SemAccount" value-field="account" />
             </actions>
@@ -74,15 +60,31 @@
     <screen name="EditSemAccount">
         <section>
             <actions>
-                <set field="titleProperty" value="PageTitleEditExample" />
-                <set field="tabButtonItem" value="EditExample" />
+                <set field="headerItem" value="SemAccountMenuItem" />
+                <set field="titleProperty" value="PageTitleEditSemAccount" />
                 <set field="accountId" from-field="parameters.accountId" />
                 <entity-one entity-name="SemAccount" value-field="account" />
             </actions>
             <widgets>
                 <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
                     <decorator-section name="body">
-                        <include-form name="EditSemAccount" location="component://SemMgr/widget/SemMgrForms.xml" />
+                        <section>
+                            <widgets>
+                                <container style="h1">
+                                    <label>广告账户信息</label>
+                                </container>
+                                <container style="button-bar">
+                                    <link target="FindSemAccount" text="返回" style="buttontext create" />
+                                </container>
+                            </widgets>
+                        </section>
+                        <horizontal-separator />
+                        <section>
+                            <widgets>
+                                <include-form name="EditSemAccount" location="component://SemMgr/widget/SemMgrForms.xml" />
+                            </widgets>
+                        </section>
+                        <horizontal-separator />
                     </decorator-section>
                 </decorator-screen>
             </widgets>

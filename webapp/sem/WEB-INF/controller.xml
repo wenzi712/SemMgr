@@ -39,7 +39,7 @@
     <request-map uri="createSemAccount">
         <security https="true" auth="true" />
         <event type="service" invoke="createSemAccount" />
-        <response name="success" type="request-redirect" value="EditSemAccount">
+        <response name="success" type="request-redirect" value="FindSemAccount">
             <redirect-parameter name="accountId" />
         </response>
         <response name="error" type="view" value="FindSemAccount" />
@@ -47,7 +47,7 @@
     <request-map uri="updateSemAccount">
         <security https="true" auth="true" />
         <event type="service" invoke="updateSemAccount" />
-        <response name="success" type="request-redirect" value="EditSemAccount">
+        <response name="success" type="request-redirect" value="FindSemAccount">
             <redirect-parameter name="accountId" />
         </response>
         <response name="error" type="view" value="EditSemAccount" />
