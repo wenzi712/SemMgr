@@ -9,6 +9,7 @@
 package com.yhsem.common;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,7 @@ import com.yhsem.baidu.BaiduSemWorkers;
 import com.yhsem.baidu.ReportInstance;
 import com.yhsem.helper.SemBaseHelper;
 import com.yhsem.helper.SemRptHelper;
+import com.yhsem.sogou.SogouSemWorkers;
 
 /**
  * 
@@ -169,7 +171,58 @@ public class RptServices {
                         e.printStackTrace();
                     }
                 } else if (UtilValidate.areEqual("SG", channelId)) {
+                    // 区域报告
+                    try {
+                        com.yhsem.sogou.ReportInstance report = new com.yhsem.sogou.ReportInstance(
+                                acct.getString("accountName"), acct.getString("accountPwd"),
+                                acct.getString("accountToken"));
 
+                        GenericValue record1 = EntityUtil.getFirst(delegator.findByAnd("SemRptRecord", UtilMisc.toMap(
+                                "accountId", accountId, "rptDate", rptDate, "rptTypeId", "REGION", "infoFlow", "0"),
+                                UtilMisc.toList("accountId"), false));
+                        String reportId = null;
+                        // 数据为空则新建
+                        if (UtilValidate.isEmpty(record1)) {
+                            reportId = report.getRegionReportId(delegator);
+                            ModelService createSemRptRecordService = dispatcher.getDispatchContext().getModelService(
+                                    "createSemRptRecord");
+                            Map<String, Object> paramMap = FastMap.newInstance();
+                            paramMap.putAll(UtilMisc.toMap("recordId", delegator.getNextSeqId("SemRptRecord"),
+                                    "accountId", accountId, "rptDate", rptDate, "rptTypeId", "REGION"));
+                            paramMap.putAll(UtilMisc.toMap("infoFlow", "0", "isFinished", "0", "reportId", reportId,
+                                    "requestTime", UtilDateTime.nowTimestamp()));
+                            paramMap.put("userLogin", userLogin);
+                            Map<String, Object> createSemRptRecordMap = createSemRptRecordService.makeValid(paramMap,
+                                    ModelService.IN_PARAM);
+                            dispatcher.runSync(createSemRptRecordService.name, createSemRptRecordMap);
+                        }
+
+                        // 关键词报告
+                        GenericValue record2 = EntityUtil.getFirst(delegator.findByAnd("SemRptRecord", UtilMisc.toMap(
+                                "accountId", accountId, "rptDate", rptDate, "rptTypeId", "KEYWORD", "infoFlow", "0"),
+                                UtilMisc.toList("accountId"), false));
+                        // 获取报告ID
+                        String reportId2 = null;
+                        if (UtilValidate.isEmpty(record2)) {
+                            reportId2 = report.getKeywordReportId(delegator);
+
+                            ModelService createSemRptRecordService = dispatcher.getDispatchContext().getModelService(
+                                    "createSemRptRecord");
+                            Map<String, Object> paramMap = FastMap.newInstance();
+                            paramMap.putAll(UtilMisc.toMap("recordId", delegator.getNextSeqId("SemRptRecord"),
+                                    "accountId", accountId, "rptDate", rptDate, "rptTypeId", "KEYWORD"));
+                            paramMap.putAll(UtilMisc.toMap("infoFlow", "0", "isFinished", "0", "reportId", reportId2,
+                                    "requestTime", UtilDateTime.nowTimestamp()));
+                            paramMap.put("userLogin", userLogin);
+                            Map<String, Object> createSemRptRecordMap = createSemRptRecordService.makeValid(paramMap,
+                                    ModelService.IN_PARAM);
+                            dispatcher.runSync(createSemRptRecordService.name, createSemRptRecordMap);
+                        }
+                    } catch (GenericEntityException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 } else if (UtilValidate.areEqual("SM", channelId)) {
 
                 }
@@ -224,7 +277,18 @@ public class RptServices {
                                 }
                             }
                         } else if (UtilValidate.areEqual("SG", channelId)) {
-
+                            com.yhsem.sogou.ReportInstance report = new com.yhsem.sogou.ReportInstance(
+                                    acct.getString("accountName"), acct.getString("accountPwd"),
+                                    acct.getString("accountToken"));
+                            if (UtilValidate.areEqual("REGION", record.getString("rptTypeId"))) {// 区域报表
+                                reportId = report.getRegionReportId(delegator,
+                                        UtilDateTime.getDayStart(new Timestamp(rptDate.getTime())),
+                                        UtilDateTime.getDayEnd(new Timestamp(rptDate.getTime())));
+                            } else {// 关键词报告
+                                reportId = report.getKeywordReportId(delegator,
+                                        UtilDateTime.getDayStart(new Timestamp(rptDate.getTime())),
+                                        UtilDateTime.getDayEnd(new Timestamp(rptDate.getTime())));
+                            }
                         } else if (UtilValidate.areEqual("SM", channelId)) {
 
                         }
@@ -287,7 +351,10 @@ public class RptServices {
 
                             statusId = report.getReportStateByReportId(delegator, reportId).toString();
                         } else if (UtilValidate.areEqual("SG", channelId)) {
-
+                            com.yhsem.sogou.ReportInstance report = new com.yhsem.sogou.ReportInstance(
+                                    acct.getString("accountName"), acct.getString("accountPwd"),
+                                    acct.getString("accountToken"));
+                            statusId = report.getReportStateByReportId(delegator, reportId).toString();
                         } else if (UtilValidate.areEqual("SM", channelId)) {
 
                         }
@@ -347,7 +414,10 @@ public class RptServices {
 
                             fileUrl = report.getReportFileUrlByReportId(delegator, reportId);
                         } else if (UtilValidate.areEqual("SG", channelId)) {
-
+                            com.yhsem.sogou.ReportInstance report = new com.yhsem.sogou.ReportInstance(
+                                    acct.getString("accountName"), acct.getString("accountPwd"),
+                                    acct.getString("accountToken"));
+                            fileUrl = report.getReportFileUrlByReportId(delegator, reportId);
                         } else if (UtilValidate.areEqual("SM", channelId)) {
 
                         }
@@ -407,6 +477,7 @@ public class RptServices {
                         String channelId = acct.getString("channelId");
                         Date rptDate = record.getDate("rptDate");
                         String fileUrl = record.getString("fileUrl");
+                        String reportId = record.getString("reportId");
                         String rptTypeId = record.getString("rptTypeId");
                         boolean finished = false;
                         if (UtilValidate.areEqual("BD", channelId)) {
@@ -414,7 +485,8 @@ public class RptServices {
                                     fileUrl);
                             // 处理百度数据
                         } else if (UtilValidate.areEqual("SG", channelId)) {
-
+                            finished = SogouSemWorkers.processingReport(dctx, userLogin, accountId, rptDate, rptTypeId,
+                                    fileUrl, reportId);
                         } else if (UtilValidate.areEqual("SM", channelId)) {
 
                         }

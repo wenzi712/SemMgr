@@ -1,15 +1,18 @@
 /**
  * <b>项目名：</b>YHZF<br/>
- * <b>包名：</b>com.yhsem.baidu<br/>
- * <b>文件名：</b>BaiduSemWorkers.java<br/>
- * <b>日期：</b>2019-3-5-上午11:19:20<br/>
+ * <b>包名：</b>com.yhsem.sogou<br/>
+ * <b>文件名：</b>SogouSemWorkers.java<br/>
+ * <b>日期：</b>2019-3-10-下午7:36:57<br/>
  * <b>Copyright 2012-2015 WangYi. All Rights Reserved.<br/>
  *
  */
-package com.yhsem.baidu;
+package com.yhsem.sogou;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.StringReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.List;
@@ -18,6 +21,7 @@ import java.util.Map;
 import javolution.util.FastMap;
 
 import org.ofbiz.base.util.UtilMisc;
+import org.ofbiz.base.util.UtilProperties;
 import org.ofbiz.base.util.UtilValidate;
 import org.ofbiz.entity.Delegator;
 import org.ofbiz.entity.GenericEntityException;
@@ -27,51 +31,61 @@ import org.ofbiz.service.GenericServiceException;
 import org.ofbiz.service.LocalDispatcher;
 import org.ofbiz.service.ModelService;
 
-import com.baidu.drapi.autosdk.util.DownloadUtil;
 import com.opencsv.CSVReader;
+import com.sogou.api.client.utils.FileDownloadUtils;
+import com.sogou.api.client.utils.ZipUtils;
 
 /**
  * 
- * <b>类名称：</b>BaiduSemWorkers<br/>
+ * <b>类名称：</b>SogouSemWorkers<br/>
  * <b>类描述：</b>〈一句话功能简述〉<br/>
  * <b>类详细描述：</b>〈功能详细描述〉<br/>
  * <b>创建人：</b>WangYi<br/>
  * <b>修改人：</b>WangYi<br/>
- * <b>修改时间：</b>2019-3-5 上午11:19:20<br/>
+ * <b>修改时间：</b>2019-3-10 下午7:36:57<br/>
  * <b>修改备注：</b><br/>
  * 
  * @version <br/>
  * 
  */
-public class BaiduSemWorkers {
-    public static final String module = BaiduSemWorkers.class.getName();
+public class SogouSemWorkers {
+    public static final String module = SogouSemWorkers.class.getName();
+    public static String FOLDER = UtilProperties.getPropertyValue("sem.properties", "SOGOU_FOLDR_PATH");
 
     public static boolean processingReport(DispatchContext dctx, GenericValue userLogin, String accountId,
-            Date rptDate, String rptTypeId, String fileUrl) throws IOException, GenericServiceException,
-            GenericEntityException {
+            Date rptDate, String rptTypeId, String fileUrl, String reportId) throws IOException,
+            GenericServiceException, GenericEntityException {
         if (UtilValidate.areEqual("REGION", rptTypeId)) {
-            return processingRegionReport(dctx, userLogin, accountId, rptDate, fileUrl);
+            return processingRegionReport(dctx, userLogin, accountId, rptDate, fileUrl, reportId);
         } else if (UtilValidate.areEqual("KEYWORD", rptTypeId)) {
-            return processingKeywordReport(dctx, userLogin, accountId, rptDate, fileUrl);
+            return processingKeywordReport(dctx, userLogin, accountId, rptDate, fileUrl, reportId);
         }
         return false;
     }
 
     public static boolean processingRegionReport(DispatchContext dctx, GenericValue userLogin, String accountId,
-            Date rptDate, String fileUrl) throws IOException, GenericServiceException, GenericEntityException {
+            Date rptDate, String fileUrl, String reportId) throws IOException, GenericServiceException,
+            GenericEntityException {
         LocalDispatcher dispatcher = dctx.getDispatcher();
         Delegator delegator = dctx.getDelegator();
 
         List<GenericValue> recordList = delegator.findByAnd("SemRegionRpt",
                 UtilMisc.toMap("accountId", accountId, "rptDate", rptDate), null, false);
         if (UtilValidate.isEmpty(recordList)) {
-            byte[] b = DownloadUtil.downloadFile(fileUrl);
-            CSVReader c = new CSVReader(new StringReader(new String(b, "GBK")), '\t');
+            String reportFile = FOLDER + reportId + ".gzip";
+            String reportFileCsv = FOLDER + reportId + ".csv";
+            FileDownloadUtils.downloadFile(fileUrl, reportFile);
+
+            ZipUtils.unGzipFile(reportFile, reportFileCsv);
+            File file = new File(reportFileCsv);
+            InputStream input = new FileInputStream(file);
+            CSVReader c = new CSVReader(new InputStreamReader(input, "GBK"), ',');
+
             String[] nextLine;
             int n = 0;
             while ((nextLine = c.readNext()) != null) {
                 n++;
-                if (n > 1) {
+                if (n > 2) {
                     String rptId = delegator.getNextSeqId("SemRegionRpt");
 
                     ModelService createSemRegionRptService = dispatcher.getDispatchContext().getModelService(
@@ -81,23 +95,22 @@ public class BaiduSemWorkers {
                     paramMap.put("rptId", rptId);
                     paramMap.put("accountId", accountId);
                     paramMap.put("rptDate", rptDate);
-                    paramMap.put("regionId", nextLine[3]);
-                    paramMap.put("regionName", nextLine[4]);
-                    paramMap.put("cityId", nextLine[5]);
-                    paramMap.put("cityName", nextLine[6]);
-                    paramMap.put("impression", Long.valueOf(nextLine[7]));
-                    paramMap.put("click", Long.valueOf(nextLine[8]));
-                    paramMap.put("cost", new BigDecimal(nextLine[9]));
-                    String ctr = nextLine[10].replace("%", "");
-                    paramMap.put("ctr", Double.valueOf(ctr) / 100);
-                    paramMap.put("cpc", new BigDecimal(nextLine[11]));
-                    paramMap.put("cpm", new BigDecimal(nextLine[12]));
-                    paramMap.put("position", Double.valueOf(nextLine[14]));
-                    paramMap.put("conversion", new BigDecimal(nextLine[13]));
+                    paramMap.put("regionId", null);
+                    paramMap.put("regionName", nextLine[3]);
+                    paramMap.put("cityId", null);
+                    paramMap.put("cityName", nextLine[4]);
+                    paramMap.put("impression", Long.valueOf(0));
+                    paramMap.put("click", Long.valueOf(nextLine[9]));
+                    paramMap.put("cost", new BigDecimal(nextLine[6]));
+                    paramMap.put("ctr", Double.valueOf(0));
+                    paramMap.put("cpc", new BigDecimal(nextLine[8]));
+                    paramMap.put("cpm", new BigDecimal(0));
+                    paramMap.put("position", Double.valueOf(0));
+                    paramMap.put("conversion", new BigDecimal(0));
                     paramMap.put("bridgeConversion", BigDecimal.ZERO);
-                    paramMap.put("locatingMethod", null);
                     paramMap.put("planId", null);
                     paramMap.put("planName", null);
+                    paramMap.put("locatingMethod", nextLine[5]);
 
                     paramMap.put("userLogin", userLogin);
                     Map<String, Object> createSemRegionRptMap = createSemRegionRptService.makeValid(paramMap,
@@ -111,20 +124,29 @@ public class BaiduSemWorkers {
     }
 
     public static boolean processingKeywordReport(DispatchContext dctx, GenericValue userLogin, String accountId,
-            Date rptDate, String fileUrl) throws IOException, GenericServiceException, GenericEntityException {
+            Date rptDate, String fileUrl, String reportId) throws IOException, GenericServiceException,
+            GenericEntityException {
         LocalDispatcher dispatcher = dctx.getDispatcher();
         Delegator delegator = dctx.getDelegator();
 
         List<GenericValue> recordList = delegator.findByAnd("SemKeyWordRpt",
                 UtilMisc.toMap("accountId", accountId, "rptDate", rptDate), null, false);
         if (UtilValidate.isEmpty(recordList)) {
-            byte[] b = DownloadUtil.downloadFile(fileUrl);
-            CSVReader c = new CSVReader(new StringReader(new String(b, "GBK")), '\t');
+            String reportFile = FOLDER + reportId + ".gzip";
+            String reportFileCsv = FOLDER + reportId + ".csv";
+            FileDownloadUtils.downloadFile(fileUrl, reportFile);
+
+            ZipUtils.unGzipFile(reportFile, reportFileCsv);
+            File file = new File(reportFileCsv);
+
+            InputStream input = new FileInputStream(file);
+            CSVReader c = new CSVReader(new InputStreamReader(input, "GBK"), ',');
+
             String[] nextLine;
             int n = 0;
             while ((nextLine = c.readNext()) != null) {
                 n++;
-                if (n > 1) {
+                if (n > 2) {
                     String rptId = delegator.getNextSeqId("SemKeyWordRpt");
 
                     ModelService createSemKeyWordRptService = dispatcher.getDispatchContext().getModelService(
@@ -141,15 +163,14 @@ public class BaiduSemWorkers {
                     paramMap.put("keyWordId", nextLine[7]);
                     paramMap.put("keyWord", nextLine[8]);
 
-                    paramMap.put("impression", Long.valueOf(nextLine[9]));
-                    paramMap.put("click", Long.valueOf(nextLine[10]));
-                    paramMap.put("cost", new BigDecimal(nextLine[11]));
-                    String ctr = nextLine[12].replace("%", "");
-                    paramMap.put("ctr", Double.valueOf(ctr) / 100);
-                    paramMap.put("cpc", new BigDecimal(nextLine[13]));
-                    paramMap.put("cpm", new BigDecimal(nextLine[14]));
-                    paramMap.put("position", Double.valueOf(nextLine[16]));
-                    paramMap.put("conversion", new BigDecimal(nextLine[15]));
+                    paramMap.put("impression", Long.valueOf(0));
+                    paramMap.put("click", Long.valueOf(nextLine[11]));
+                    paramMap.put("cost", new BigDecimal(nextLine[9]));
+                    paramMap.put("ctr", Double.valueOf(0));
+                    paramMap.put("cpc", new BigDecimal(nextLine[10]));
+                    paramMap.put("cpm", new BigDecimal(0));
+                    paramMap.put("position", Double.valueOf(0));
+                    paramMap.put("conversion", new BigDecimal(0));
                     paramMap.put("bridgeConversion", BigDecimal.ZERO);
                     paramMap.put("locatingMethod", null);
 
@@ -160,7 +181,9 @@ public class BaiduSemWorkers {
                 }
             }
             c.close();
+
         }
         return true;
     }
+
 }
