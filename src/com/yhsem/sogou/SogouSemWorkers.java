@@ -106,7 +106,7 @@ public class SogouSemWorkers {
                     paramMap.put("cpc", new BigDecimal(nextLine[8]));
                     paramMap.put("cpm", new BigDecimal(0));
                     paramMap.put("position", Double.valueOf(0));
-                    paramMap.put("conversion", new BigDecimal(0));
+                    paramMap.put("conversion", BigDecimal.ZERO);
                     paramMap.put("bridgeConversion", BigDecimal.ZERO);
                     paramMap.put("planId", null);
                     paramMap.put("planName", null);
@@ -163,14 +163,16 @@ public class SogouSemWorkers {
                     paramMap.put("keyWordId", nextLine[7]);
                     paramMap.put("keyWord", nextLine[8]);
 
-                    paramMap.put("impression", Long.valueOf(0));
+                    paramMap.put("impression", Long.valueOf(nextLine[12]));
                     paramMap.put("click", Long.valueOf(nextLine[11]));
                     paramMap.put("cost", new BigDecimal(nextLine[9]));
-                    paramMap.put("ctr", Double.valueOf(0));
+
+                    String ctr = nextLine[13].replace("%", "");
+                    paramMap.put("ctr", Double.valueOf(ctr) / 100);
                     paramMap.put("cpc", new BigDecimal(nextLine[10]));
-                    paramMap.put("cpm", new BigDecimal(0));
-                    paramMap.put("position", Double.valueOf(0));
-                    paramMap.put("conversion", new BigDecimal(0));
+                    paramMap.put("cpm", BigDecimal.ZERO);
+                    paramMap.put("position", Double.valueOf(nextLine[14].replace("--", "0")));
+                    paramMap.put("conversion", BigDecimal.ZERO);
                     paramMap.put("bridgeConversion", BigDecimal.ZERO);
                     paramMap.put("locatingMethod", null);
 
