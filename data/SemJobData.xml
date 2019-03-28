@@ -2,9 +2,9 @@
 <entity-engine-xml>
 
     <RecurrenceRule recurrenceRuleId="SEM001" frequency="DAILY" countNumber="-1" intervalNumber="1" />
-    <RecurrenceInfo recurrenceInfoId="SEM001" startDateTime="2019-03-01 12:10:00.0" recurrenceRuleId="SEM001"
+    <RecurrenceInfo recurrenceInfoId="SEM001" startDateTime="2019-03-01 00:10:00.0" recurrenceRuleId="SEM001"
         recurrenceCount="1" />
-    <JobSandbox jobId="SEM001" jobName="同步请求上日报表数据" runTime="2019-03-01 12:10:00.0" poolId="pool" runAsUser="system"
+    <JobSandbox jobId="SEM001" jobName="同步请求上日报表数据" runTime="2019-03-01 00:10:00.0" poolId="pool" runAsUser="system"
         statusId="SERVICE_PENDING" serviceName="getDailyReport" loaderName="default" maxRetry="0" currentRetryCount="0"
         recurrenceInfoId="SEM001" parentJobId="SEM001" previousJobId="SEM001" />
 </entity-engine-xml>
