@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-screen.xsd">
-    <!-- list all examples in a tabular format -->
     <screen name="FindSemAccount">
         <section>
             <actions>
@@ -90,4 +89,95 @@
             </widgets>
         </section>
     </screen>
+    
+    <!-- 分类词管理 -->
+    <screen name="FindSemWordType">
+        <section>
+            <actions>
+                <property-map resource="SemMgrUiLabels" map-name="uiLabelMap" global="true" />
+                <property-map resource="CommonUiLabels" map-name="uiLabelMap" global="true" />
+                <set field="headerItem" value="SemWordTypeMenuItem" />
+                <set field="titleProperty" value="PageTitleFindSemWordType" />
+                <set field="wtCtx" from-field="parameters" />
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <condition>
+                                <if-has-permission permission="SEM" action="_VIEW" />
+                            </condition>
+                            <widgets>
+                                <decorator-screen name="FindScreenDecorator" location="component://common/widget/CommonScreens.xml">
+                                    <decorator-section name="menu-bar">
+                                        <container style="button-bar">
+                                            <link target="EditSemWordTypeLayer" link-type="ajax-window" 
+                                                height="200" width="400" text="${uiLabelMap.ButtonNewWordType}" style="buttontext create" />
+                                        </container>
+                                    </decorator-section>
+                                    <decorator-section name="search-options">
+                                        <include-form name="FindSemWordTypes" location="component://SemMgr/widget/SemMgrForms.xml" />
+                                    </decorator-section>
+                                    <decorator-section name="search-results">
+                                        <include-form name="ListSemWordTypes" location="component://SemMgr/widget/SemMgrForms.xml" />
+                                    </decorator-section>
+                                </decorator-screen>
+                            </widgets>
+                            <fail-widgets>
+                                <label style="h3">你没有权限访问此页面</label>
+                            </fail-widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="EditSemWordTypeLayer">
+        <section>
+            <actions>
+                <property-map resource="SemMgrUiLabels" map-name="uiLabelMap" global="true" />
+                <property-map resource="CommonUiLabels" map-name="uiLabelMap" global="true" />
+                <set field="wordTypeId" from-field="parameters.wordTypeId" />
+                <entity-one entity-name="SemWordType" value-field="wt" />
+            </actions>
+            <widgets>
+                <include-form name="EditSemWordType" location="component://SemMgr/widget/SemMgrForms.xml" />
+            </widgets>
+        </section>
+    </screen>    
+    
+    <screen name="EditSemWordType">
+        <section>
+            <actions>
+                <set field="headerItem" value="SemWordTypeMenuItem" />
+                <set field="titleProperty" value="PageTitleEditSemWordType" />
+                <set field="wordTypeId" from-field="parameters.wordTypeId" />
+                <entity-one entity-name="SemWordType" value-field="wt" />
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <container style="h1">
+                                    <label>广告词分类信息</label>
+                                </container>
+                                <container style="button-bar">
+                                    <link target="FindSemWordType" text="返回" style="buttontext create" />
+                                </container>
+                            </widgets>
+                        </section>
+                        <horizontal-separator />
+                        <section>
+                            <widgets>
+                                <include-form name="EditSemWordType" location="component://SemMgr/widget/SemMgrForms.xml" />
+                            </widgets>
+                        </section>
+                        <horizontal-separator />
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>    
 </screens>

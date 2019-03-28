@@ -99,4 +99,17 @@
         <auto-attributes include="nonpk" mode="IN" optional="true" />
         <attribute name="recordId" type="String" mode="OUT" optional="false" />
     </service>
+    
+    <!-- SemWordType services -->
+    <service name="createSemWordType" engine="entity-auto" invoke="create" default-entity-name="SemWordType"
+        auth="true">
+        <description>Create a SemRptRecord</description>
+        <auto-attributes include="pk" mode="IN" optional="true" />
+        <auto-attributes include="nonpk" mode="IN"/>
+    </service>
+    <service name="updateSemWordType" engine="entity-auto" invoke="update" default-entity-name="SemWordType"
+        auth="true">
+        <description>Update a SemRptRecord</description>
+        <auto-attributes include="all" mode="IN" optional="false" />
+    </service>    
 </services>

@@ -52,11 +52,45 @@
         </response>
         <response name="error" type="view" value="EditSemAccount" />
     </request-map>
+    
+    <request-map uri="FindSemWordType">
+        <security https="true" auth="true" />
+        <response name="success" type="view" value="FindSemWordType" />
+    </request-map>
+    <request-map uri="EditSemWordTypeLayer">
+        <security https="true" auth="true" />
+        <response name="success" type="view" value="EditSemWordTypeLayer" />
+    </request-map>
+    <request-map uri="EditSemWordType">
+        <security https="true" auth="true" />
+        <response name="success" type="view" value="EditSemWordType" />
+    </request-map>
+    <request-map uri="createSemWordType">
+        <security https="true" auth="true" />
+        <event type="service" invoke="createSemWordType" />
+        <response name="success" type="request-redirect" value="FindSemWordType">
+            <redirect-parameter name="wordTypeId" />
+        </response>
+        <response name="error" type="view" value="FindSemWordType" />
+    </request-map>
+    <request-map uri="updateSemWordType">
+        <security https="true" auth="true" />
+        <event type="service" invoke="updateSemWordType" />
+        <response name="success" type="request-redirect" value="FindSemWordType">
+            <redirect-parameter name="wordTypeId" />
+        </response>
+        <response name="error" type="view" value="EditSemWordType" />
+    </request-map>
+    
     <!-- View Mappings -->
     <view-map name="main" type="screen" page="component://SemMgr/widget/SemMgrScreens.xml#FindSemAccount" />
     <view-map name="FindSemAccount" type="screen" page="component://SemMgr/widget/SemMgrScreens.xml#FindSemAccount" />
     <view-map name="EditSemAccount" type="screen" page="component://SemMgr/widget/SemMgrScreens.xml#EditSemAccount" />
     <view-map name="EditSemAccountLayer" type="screen"
         page="component://SemMgr/widget/SemMgrScreens.xml#EditSemAccountLayer" />
+
+    <view-map name="FindSemWordType" type="screen" page="component://SemMgr/widget/SemMgrScreens.xml#FindSemWordType" />
+    <view-map name="EditSemWordTypeLayer" type="screen" page="component://SemMgr/widget/SemMgrScreens.xml#EditSemWordTypeLayer" />
+    <view-map name="EditSemWordType" type="screen" page="component://SemMgr/widget/SemMgrScreens.xml#EditSemWordType" />
 
 </site-conf>
