@@ -52,7 +52,7 @@
         </response>
         <response name="error" type="view" value="EditSemAccount" />
     </request-map>
-    
+    <!-- 关键词分类此类 -->
     <request-map uri="FindSemWordType">
         <security https="true" auth="true" />
         <response name="success" type="view" value="FindSemWordType" />
@@ -82,15 +82,56 @@
         <response name="error" type="view" value="EditSemWordType" />
     </request-map>
     
+    <!-- 关键词分类分类管理 -->
+    <request-map uri="FindSemKeyWord">
+        <security https="true" auth="true" />
+        <response name="success" type="view" value="FindSemKeyWord" />
+    </request-map>
+    <request-map uri="EditSemKeyWordLayer">
+        <security https="true" auth="true" />
+        <response name="success" type="view" value="EditSemKeyWordLayer" />
+    </request-map>
+    <request-map uri="EditSemKeyWord">
+        <security https="true" auth="true" />
+        <response name="success" type="view" value="EditSemKeyWord" />
+    </request-map>
+    <request-map uri="createSemKeyWord">
+        <security https="true" auth="true" />
+        <event type="service" invoke="createSemKeyWord" />
+        <response name="success" type="request-redirect" value="FindSemKeyWord">
+            <redirect-parameter name="keyWordId" />
+        </response>
+        <response name="error" type="view" value="FindSemKeyWord" />
+    </request-map>
+    <request-map uri="updateSemKeyWord">
+        <security https="true" auth="true" />
+        <event type="service" invoke="updateSemKeyWord" />
+        <response name="success" type="request-redirect" value="FindSemKeyWord">
+            <redirect-parameter name="keyWordId" />
+        </response>
+        <response name="error" type="view" value="EditSemKeyWord" />
+    </request-map>
+    
+    <!-- 快商通推送数据接口 -->
+    <request-map uri="receivingData">
+        <event type="java" path="com.yhsem.kst.MsgEvent" invoke="receivingData"/>
+        <response name="success" type="none" />
+        <response name="error" type="none" />
+    </request-map>
+    
     <!-- View Mappings -->
     <view-map name="main" type="screen" page="component://SemMgr/widget/SemMgrScreens.xml#FindSemAccount" />
     <view-map name="FindSemAccount" type="screen" page="component://SemMgr/widget/SemMgrScreens.xml#FindSemAccount" />
     <view-map name="EditSemAccount" type="screen" page="component://SemMgr/widget/SemMgrScreens.xml#EditSemAccount" />
-    <view-map name="EditSemAccountLayer" type="screen"
-        page="component://SemMgr/widget/SemMgrScreens.xml#EditSemAccountLayer" />
+    <view-map name="EditSemAccountLayer" type="screen" page="component://SemMgr/widget/SemMgrScreens.xml#EditSemAccountLayer" />
 
     <view-map name="FindSemWordType" type="screen" page="component://SemMgr/widget/SemMgrScreens.xml#FindSemWordType" />
-    <view-map name="EditSemWordTypeLayer" type="screen" page="component://SemMgr/widget/SemMgrScreens.xml#EditSemWordTypeLayer" />
+    <view-map name="EditSemWordTypeLayer" type="screen"
+        page="component://SemMgr/widget/SemMgrScreens.xml#EditSemWordTypeLayer" />
     <view-map name="EditSemWordType" type="screen" page="component://SemMgr/widget/SemMgrScreens.xml#EditSemWordType" />
+
+    <view-map name="FindSemKeyWord" type="screen" page="component://SemMgr/widget/SemMgrScreens.xml#FindSemKeyWord" />
+    <view-map name="EditSemKeyWordLayer" type="screen" page="component://SemMgr/widget/SemMgrScreens.xml#EditSemKeyWordLayer" />
+    <view-map name="EditSemKeyWord" type="screen" page="component://SemMgr/widget/SemMgrScreens.xml#EditSemKeyWord" />
 
 </site-conf>

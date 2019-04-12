@@ -3,6 +3,9 @@
     <menu name="MainAppBar" title="${uiLabelMap.SemMgrApplication}" extends="CommonAppBarMenu" extends-resource="component://common/widget/CommonMenus.xml">
         <menu-item name="main" title="首页"><link target="FindSemAccount"/></menu-item>
         <menu-item name="FindSemAccount" title="广告账号管理"><link target="FindSemAccount"/></menu-item>
-        <menu-item name="FindSemWordType" title="广告词分类管理"><link target="FindSemWordType"/></menu-item>
+        <!--  
+        <menu-item name="FindSemWordType" title="广告词词类管理"><link target="FindSemWordType"/></menu-item>
+        <menu-item name="FindSemKeyWord" title="广告词分类管理"><link target="FindSemKeyWord"/></menu-item>
+        -->
     </menu>
 </menus>
