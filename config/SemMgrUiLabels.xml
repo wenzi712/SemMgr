@@ -24,10 +24,18 @@
         <value xml:lang="en">Find SemAccount</value>
         <value xml:lang="zh">广告账号管理</value>
     </property>
+    <property key="PageTitleFindSemWordType">
+        <value xml:lang="en">Find Sem Word Type</value>
+        <value xml:lang="zh">广告词分类管理</value>
+    </property>
 
     <property key="ButtonNewAccount">
         <value xml:lang="en">New Sem Account</value>
         <value xml:lang="zh">新建广告账号</value>
+    </property>
+    <property key="ButtonNewWordType">
+        <value xml:lang="en">New Sem Word Type</value>
+        <value xml:lang="zh">新建广告词分类</value>
     </property>
 
 </resource>

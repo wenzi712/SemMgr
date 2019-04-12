@@ -114,4 +114,119 @@
         </field>
     </form>
 
+    <!-- 词类管理 -->
+    <form name="FindSemWordTypes" type="single" target="FindSemWordType" default-entity-name="SemWordType">
+        <field name="noConditionFind">
+            <hidden value="Y" />
+        </field>
+        <field name="wordTypeName" title="分类名称" position="1">
+            <text-find default-option="contains" hide-options="true" />
+        </field>
+
+        <field name="searchButton" title="${uiLabelMap.CommonFind}" widget-style="smallSubmit" position="2">
+            <submit button-type="button" image-location="/images/icons/magnifier.png" />
+        </field>
+    </form>
+
+    <form name="ListSemWordTypes" type="list" list-name="listIt" paginate-target="FindSemWordType"
+        default-entity-name="SemWordType" separate-columns="true" odd-row-style="alternate-row" header-row-style="header-row-2"
+        default-table-style="basic-table hover-bar">
+        <actions>
+            <service service-name="performFind" result-map="result" result-map-list="listIt">
+                <field-map field-name="inputFields" from-field="wtCtx" />
+                <field-map field-name="entityName" value="SemWordType" />
+                <field-map field-name="orderBy" from-field="parameters.sortField" />
+                <field-map field-name="viewIndex" from-field="viewIndex" />
+                <field-map field-name="viewSize" from-field="viewSize" />
+            </service>
+        </actions>
+        <field name="wordTypeId" title="操作" widget-style="buttontext">
+            <hyperlink also-hidden="false" description="编辑" target="EditSemWordType">
+                <parameter param-name="wordTypeId" />
+            </hyperlink>
+        </field>
+        <field name="wordTypeName" title="分类名称">
+            <display />
+        </field>
+    </form>
+
+    <form name="EditSemWordType" type="single" target="updateSemWordType" title="EditSemWordType" default-map-name="wt"
+        default-entity-name="SemWordType">
+        <alt-target use-when="wt==null" target="createSemWordType" />
+
+        <field name="wordTypeId">
+            <hidden />
+        </field>
+        <field name="wordTypeId" use-when="wt==null">
+            <hidden value="${groovy: delegator.getNextSeqId(&quot;SemWordType&quot;)}" />
+        </field>
+        <field name="wordTypeName" title="分类名称" required-field="true" widget-style="required">
+            <text placeholder="请输入分类名称" maxlength="30" size="30" client-autocomplete-field="false" />
+        </field>
+
+        <field name="submitButton" use-when="wt==null" title="${uiLabelMap.CommonCreate}">
+            <submit button-type="button" />
+        </field>
+        <field name="submitButton" use-when="wt!=null" title="${uiLabelMap.CommonUpdate}">
+            <submit button-type="button" />
+        </field>
+    </form>    
+    
+    <!-- 广告词分类管理 -->
+    <form name="FindSemKeyWords" type="single" target="FindSemWordType" default-entity-name="SemKeyWord">
+        <field name="noConditionFind">
+            <hidden value="Y" />
+        </field>
+        <field name="wordTypeName" title="分类名称" position="1">
+            <text-find default-option="contains" hide-options="true" />
+        </field>
+
+        <field name="searchButton" title="${uiLabelMap.CommonFind}" widget-style="smallSubmit" position="2">
+            <submit button-type="button" image-location="/images/icons/magnifier.png" />
+        </field>
+    </form>
+
+    <form name="ListSemKeyWords" type="list" list-name="listIt" paginate-target="FindSemKeyWord"
+        default-entity-name="SemKeyWord" separate-columns="true" odd-row-style="alternate-row" header-row-style="header-row-2"
+        default-table-style="basic-table hover-bar">
+        <actions>
+            <service service-name="performFind" result-map="result" result-map-list="listIt">
+                <field-map field-name="inputFields" from-field="kwCtx" />
+                <field-map field-name="entityName" value="SemKeyWord" />
+                <field-map field-name="orderBy" from-field="parameters.sortField" />
+                <field-map field-name="viewIndex" from-field="viewIndex" />
+                <field-map field-name="viewSize" from-field="viewSize" />
+            </service>
+        </actions>
+        <field name="wordTypeId" title="操作" widget-style="buttontext">
+            <hyperlink also-hidden="false" description="编辑" target="EditSemKeyWord">
+                <parameter param-name="wordTypeId" />
+            </hyperlink>
+        </field>
+        <field name="wordTypeName" title="分类名称">
+            <display />
+        </field>
+    </form>
+
+    <form name="EditSemKeyWord" type="single" target="updateSemKeyWord" title="EditSemKeyWord" default-map-name="wt"
+        default-entity-name="SemKeyWord">
+        <alt-target use-when="kw==null" target="createSemKeyWord" />
+
+        <field name="wordTypeId">
+            <hidden />
+        </field>
+        <field name="wordTypeId" use-when="wt==null">
+            <hidden value="${groovy: delegator.getNextSeqId(&quot;SemKeyWord&quot;)}" />
+        </field>
+        <field name="wordTypeName" title="分类名称" required-field="true" widget-style="required">
+            <text placeholder="请输入分类名称" maxlength="30" size="30" client-autocomplete-field="false" />
+        </field>
+
+        <field name="submitButton" use-when="wt==null" title="${uiLabelMap.CommonCreate}">
+            <submit button-type="button" />
+        </field>
+        <field name="submitButton" use-when="wt!=null" title="${uiLabelMap.CommonUpdate}">
+            <submit button-type="button" />
+        </field>
+    </form>        
 </forms>

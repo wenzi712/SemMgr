@@ -97,6 +97,9 @@ public class ReportInstance {
         reportRequestType.getPerformanceData().add("click");
         reportRequestType.getPerformanceData().add("clickPercent");
         reportRequestType.getPerformanceData().add("cpc");
+        reportRequestType.getPerformanceData().add("ctr");
+        reportRequestType.getPerformanceData().add("impression");
+        reportRequestType.getPerformanceData().add("position");
         getReportIdRequest.setReportRequestType(reportRequestType);
         reportRequestType.getRegions().add(0001);// TODO: 观察是否需要修正这个参数
         getReportIdRequest.setReportRequestType(reportRequestType);
@@ -150,6 +153,9 @@ public class ReportInstance {
         reportRequestType.getPerformanceData().add("click");
         reportRequestType.getPerformanceData().add("clickPercent");
         reportRequestType.getPerformanceData().add("cpc");
+        reportRequestType.getPerformanceData().add("ctr");
+        reportRequestType.getPerformanceData().add("impression");
+        reportRequestType.getPerformanceData().add("position");
         getReportIdRequest.setReportRequestType(reportRequestType);
         reportRequestType.getRegions().add(0001);// TODO: 观察是否需要修正这个参数
         getReportIdRequest.setReportRequestType(reportRequestType);
