@@ -163,7 +163,7 @@
         <field name="bridgeConversion" type="currency-amount">
             <description>商桥转化</description>
         </field>
-        <field name="locatingMethod" type="very-short">
+        <field name="locatingMethod" type="short-varchar">
             <description>定位方式</description>
         </field>
         <field name="planId" type="id">
@@ -172,7 +172,10 @@
         <field name="planName" type="name">
             <description>计划名称</description>
         </field>
-
+        <field name="infoFlow" type="indicator">
+            <description>是否开启信息流</description>
+            <!-- [1:是; 0:否] -->
+        </field>
         <prim-key field="rptId" />
 
         <relation rel-entity-name="SemAccount" type="one">
@@ -235,7 +238,10 @@
         <field name="wordTypeId" type="id">
             <description>词类ID</description>
         </field>
-
+        <field name="infoFlow" type="indicator">
+            <description>是否开启信息流</description>
+            <!-- [1:是; 0:否] -->
+        </field>
         <prim-key field="rptId" />
 
         <relation rel-entity-name="SemAccount" type="one">
