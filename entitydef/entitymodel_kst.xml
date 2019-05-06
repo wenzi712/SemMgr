@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entitymodel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/entitymodel.xsd">
+    <!-- ========================================================= -->
+    <!-- ======================== Defaults ======================= -->
+    <!-- ========================================================= -->
+    <title>Entity of SemMgr Component</title>
+    <description>None</description>
+    <copyright></copyright>
+    <version></version>
+
+    <!-- ========================================================= -->
+    <!-- com.yh.sem.kst -->
+    <!-- ========================================================= -->
+
+    <entity entity-name="SemVisitorInfo" package-name="com.yh.sem.kst" title="访客信息表">
+        <field name="recId" type="id-long-ne">
+            <description>访客回话信息的唯一标识</description>
+        </field>
+        <field name="visitorId" type="id-long-ne">
+            <description>访客ID，访客的唯一标识</description>
+        </field>
+        <field name="visitorName" type="name">
+            <description>访客名称</description>
+        </field>
+        <field name="curEnterTime" type="date">
+            <description>当前进入网站时间</description>
+        </field>
+        <field name="firstVisitTime" type="date">
+            <description>最初访问时间</description>
+        </field>
+        <field name="siteId" type="id">
+            <description>当前会话所属站点ID</description>
+        </field>
+        <field name="siteName" type="name">
+            <description>当前会话所属站点名称</description>
+        </field>
+        <field name="curFirstViewPage" type="url">
+            <description>本次最初访问网页</description>
+        </field>
+        <field name="preVisitTime" type="date">
+            <description>上一次访问时间</description>
+        </field>
+        <field name="totalVisitTime" type="numeric">
+            <description>累计来访次数</description>
+        </field>
+        <field name="firstCsId" type="id">
+            <description>初次接待客服</description>
+        </field>
+        <field name="diaPage" type="url">
+            <description>发起对话网址</description>
+        </field>
+        <field name="joinCsIds" type="id">
+            <description>参与接待客服</description>
+        </field>
+        <field name="curStayTime" type="numeric">
+            <description>访客停留时间（秒 ）</description>
+        </field>
+        <field name="sourceIp" type="name">
+            <description>访客来源IP</description>
+        </field>
+        <field name="sourceProvince" type="name">
+            <description>来源省市</description>
+        </field>
+        <field name="sourceIpInfo" type="name">
+            <description>访客来源IP信息（网络接入商）</description>
+        </field>
+        <field name="sourceUrl" type="url">
+            <description>来源网页</description>
+        </field>
+        <field name="sourceType" type="indicator">
+            <description>来源类型</description>
+        </field>
+        <field name="searchEngine" type="name">
+            <description>搜索引擎</description>
+        </field>
+        <field name="keyword" type="name">
+            <description>搜索关键词</description>
+        </field>
+        <field name="requestType" type="name">
+            <description>对话请求方式</description>
+        </field>
+        <field name="endType" type="name">
+            <description>对话结束方式</description>
+        </field>
+        <field name="terminalType" type="name">
+            <description>终端类型</description>
+        </field>
+        <field name="visitorSendNum" type="numeric">
+            <description>访客发送消息数</description>
+        </field>
+        <field name="csSendNum" type="numeric">
+            <description>客服发送消息数</description>
+        </field>
+        <field name="curVisitorPages" type="numeric">
+            <description>当前访问页数</description>
+        </field>
+        <field name="preVisitPages" type="numeric">
+            <description>上次访问页数</description>
+        </field>
+        <field name="operatingSystem" type="name">
+            <description>操作系统</description>
+        </field>
+        <field name="browser" type="name">
+            <description>浏览器</description>
+        </field>
+        <field name="info" type="very-long">
+            <description>对话说明</description>
+        </field>
+
+        <prim-key field="recId" />
+    </entity>
+
+    <entity entity-name="SemDialogs" package-name="com.yh.sem.dialogs" title="对话数据表">
+        <field name="addTime" type="date-time">
+            <description>消息发送时间</description>
+        </field>
+        <field name="id" type="id-ne">
+            <description>对话记录ID</description>
+        </field>
+        <field name="recId" type="id">
+            <description>访客信息ID</description>
+        </field>
+        <field name="recType" type="indicator">
+            <description>消息类型</description>
+        </field>
+        <field name="sender" type="name">
+            <description>消息发送者</description>
+        </field>
+        <field name="recContent" type="very-long">
+            <description>消息内容</description>
+        </field>
+
+        <prim-key field="id" />
+
+        <relation rel-entity-name="SemVisitorInfo" type="many">
+            <key-map field-name="recId" />
+        </relation>
+    </entity>
+
+    <entity entity-name="SemVisitorCard" package-name="com.yh.sem.visitorCard" title="访客名片表">
+        <field name="visitorId" type="id-long-ne">
+            <description>访客ID</description>
+        </field>
+
+        <field name="linkman" type="name">
+            <description>联系人名称</description>
+        </field>
+        <field name="cusType" type="name">
+            <description>访客类型</description>
+        </field>
+        <field name="compName" type="name">
+            <description>公司名称</description>
+        </field>
+        <field name="webUrl" type="url">
+            <description>网址</description>
+        </field>
+        <field name="mobile" type="name">
+            <description>手机</description>
+        </field>
+        <field name="phone" type="name">
+            <description>电话</description>
+        </field>
+        <field name="qq" type="name">
+            <description>QQ</description>
+        </field>
+        <field name="msn" type="name">
+            <description>MSN/微信</description>
+        </field>
+        <field name="email" type="name">
+            <description>邮箱</description>
+        </field>
+        <field name="address" type="name">
+            <description>地址</description>
+        </field>
+        <field name="birthday" type="name">
+            <description>生日</description>
+        </field>
+        <field name="col1" type="name">
+            <description>自定义字段1</description>
+        </field>
+        <field name="col2" type="name">
+            <description>自定义字段2</description>
+        </field>
+        <field name="col3" type="name">
+            <description>自定义字段3</description>
+        </field>
+        <field name="col4" type="name">
+            <description>自定义字段4</description>
+        </field>
+        <field name="col5" type="name">
+            <description>自定义字段5</description>
+        </field>
+        <field name="col6" type="name">
+            <description>自定义字段6</description>
+        </field>
+        <field name="col7" type="name">
+            <description>自定义字段7</description>
+        </field>
+        <field name="col8" type="name">
+            <description>自定义字段8</description>
+        </field>
+        <field name="col9" type="name">
+            <description>自定义字段9</description>
+        </field>
+        <field name="remark" type="very-long">
+            <description>备注</description>
+        </field>
+        <field name="loginName" type="name">
+            <description>所属客服登录名</description>
+        </field>
+        <field name="userName" type="name">
+            <description>所属客服姓名</description>
+        </field>
+        <field name="nickName" type="name">
+            <description>所属客服昵称</description>
+        </field>
+        <field name="addtime" type="date">
+            <description>添加时间</description>
+        </field>
+        <field name="lastChangeTime" type="date">
+            <description>最后修改时间</description>
+        </field>
+
+        <field name="yongHeUserId" type="name">
+            <description>yongHeUserID</description>
+        </field>
+
+        <prim-key field="visitorId" />
+
+        <relation rel-entity-name="SemVisitorInfo" type="one">
+            <key-map field-name="visitorId" />
+        </relation>
+    </entity>
+
+</entitymodel>
