@@ -63,17 +63,26 @@ public class MsgEvent {
                 JSONArray ja = (JSONArray) parse;
                 // TODO: 使用事务控制进行数据操作
                 // start
-                boolean r = true;
                 boolean beganTransaction = false;
                 try {
                     beganTransaction = TransactionUtil.begin();
-                    r = processingAllData(delegator, ja);
+                    boolean r = processingAllData(delegator, ja);
+
+                    if (r) {
+                        request.setAttribute("message", "ok");
+                        return "success";
+                    } else {
+                        request.setAttribute("message", "error");
+                        return "error";
+                    }
                 } catch (GenericEntityException e) {
                     try {
                         TransactionUtil.rollback(beganTransaction, e.getLocalizedMessage(), e);
                     } catch (GenericEntityException e2) {
                         Debug.logError(e2, "Could not rollback transaction: " + e2.toString(), module);
                     }
+                    request.setAttribute("message", "error");
+                    return "error";
                 } finally {
                     try {
                         TransactionUtil.commit(beganTransaction);
@@ -82,13 +91,6 @@ public class MsgEvent {
                     }
                 }
 
-                if (r) {
-                    request.setAttribute("message", "ok");
-                    return "success";
-                } else {
-                    request.setAttribute("message", "ok");
-                    return "success";
-                }
                 // end
             } else {
                 Debug.logError("parse receivingData Error", module);
@@ -170,7 +172,7 @@ public class MsgEvent {
                         .getString("visitorName") : null;
                 Date curEnterTime = UtilValidate.isNotEmpty(visitorInfo.getSqlDate("curEnterTime")) ? visitorInfo
                         .getSqlDate("curEnterTime") : null;
-                int curStayTime = UtilValidate.isNotEmpty(visitorInfo.getInteger("curStayTime")) ? visitorInfo
+                Integer curStayTime = UtilValidate.isNotEmpty(visitorInfo.getInteger("curStayTime")) ? visitorInfo
                         .getInteger("curStayTime") : 0;
                 String sourceIp = UtilValidate.isNotEmpty(visitorInfo.getString("sourceIp")) ? visitorInfo
                         .getString("sourceIp") : null;
@@ -188,9 +190,9 @@ public class MsgEvent {
                         .getSqlDate("diaEndTime") : null;
                 String terminalType = UtilValidate.isNotEmpty(visitorInfo.getString("terminalType")) ? visitorInfo
                         .getString("terminalType") : null;
-                int visitorSendNum = UtilValidate.isNotEmpty(visitorInfo.getInteger("visitorSendNum")) ? visitorInfo
+                Integer visitorSendNum = UtilValidate.isNotEmpty(visitorInfo.getInteger("visitorSendNum")) ? visitorInfo
                         .getInteger("visitorSendNum") : 0;
-                int csSendNum = UtilValidate.isNotEmpty(visitorInfo.getInteger("csSendNum")) ? visitorInfo
+                Integer csSendNum = UtilValidate.isNotEmpty(visitorInfo.getInteger("csSendNum")) ? visitorInfo
                         .getInteger("csSendNum") : 0;
                 String sourceUrl = UtilValidate.isNotEmpty(visitorInfo.getString("sourceUrl")) ? visitorInfo
                         .getString("sourceUrl") : null;
@@ -210,15 +212,15 @@ public class MsgEvent {
                         .getSqlDate("firstVisitTime") : null;
                 Date preVisitTime = UtilValidate.isNotEmpty(visitorInfo.getSqlDate("preVisitTime")) ? visitorInfo
                         .getSqlDate("preVisitTime") : null;
-                int totalVisitTime = UtilValidate.isNotEmpty(visitorInfo.getInteger("totalVisitTime")) ? visitorInfo
+                Integer totalVisitTime = UtilValidate.isNotEmpty(visitorInfo.getInteger("totalVisitTime")) ? visitorInfo
                         .getInteger("totalVisitTime") : 0;
                 String diaPage = UtilValidate.isNotEmpty(visitorInfo.getString("diaPage")) ? visitorInfo
                         .getString("diaPage") : null;
                 String curFirstViewPage = UtilValidate.isNotEmpty(visitorInfo.getString("curFirstViewPage")) ? visitorInfo
                         .getString("curFirstViewPage") : null;
-                int curVisitorPages = UtilValidate.isNotEmpty(visitorInfo.getInteger("curVisitorPages")) ? visitorInfo
+                Integer curVisitorPages = UtilValidate.isNotEmpty(visitorInfo.getInteger("curVisitorPages")) ? visitorInfo
                         .getInteger("curVisitorPages") : 0;
-                int preVisitPages = UtilValidate.isNotEmpty(visitorInfo.getInteger("preVisitPages")) ? visitorInfo
+                Integer preVisitPages = UtilValidate.isNotEmpty(visitorInfo.getInteger("preVisitPages")) ? visitorInfo
                         .getInteger("preVisitPages") : 0;
                 String operatingSystem = UtilValidate.isNotEmpty(visitorInfo.getString("operatingSystem")) ? visitorInfo
                         .getString("operatingSystem") : null;
@@ -228,12 +230,44 @@ public class MsgEvent {
                         : null;
                 String siteName = UtilValidate.isNotEmpty(visitorInfo.getString("siteName")) ? visitorInfo
                         .getString("siteName") : null;
-                int siteId = UtilValidate.isNotEmpty(visitorInfo.getInteger("siteId")) ? visitorInfo
-                        .getInteger("siteId") : 0;
+                String siteId = UtilValidate.isNotEmpty(visitorInfo.getString("siteId")) ? visitorInfo
+                        .getString("siteId") : null;
 
                 // 不处理对话数据
                 // JSONArray dialogs = visitorInfo.getJSONArray("dialogs");
                 infoGv.setString("visitorId", visitorId);
+                infoGv.setString("visitorName", visitorName);
+                infoGv.set("curEnterTime", curEnterTime);
+                infoGv.set("curStayTime", curStayTime.longValue());
+                infoGv.setString("sourceIp", sourceIp);
+                infoGv.setString("sourceProvince", sourceProvince);
+                infoGv.setString("sourceIpInfo", sourceIpInfo);
+                infoGv.setString("requestType", requestType);
+                infoGv.setString("endType", endType);
+                infoGv.set("diaStartTime", diaStartTime);
+                infoGv.set("diaEndTime", diaEndTime);
+                infoGv.setString("terminalType", terminalType);
+                infoGv.set("visitorSendNum", visitorSendNum.longValue());
+                infoGv.set("csSendNum", csSendNum.longValue());
+                infoGv.setString("sourceUrl", sourceUrl);
+                infoGv.setString("sourceType", sourceType);
+                infoGv.setString("searchEngine", searchEngine);
+                infoGv.setString("keyword", keyword);
+                infoGv.setString("firstCsId", firstCsId);
+                infoGv.setString("joinCsIds", joinCsIds);
+                infoGv.setString("dialogType", dialogType);
+                infoGv.set("firstVisitTime", firstVisitTime);
+                infoGv.set("preVisitTime", preVisitTime);
+                infoGv.set("totalVisitTime", totalVisitTime.longValue());
+                infoGv.setString("diaPage", diaPage);
+                infoGv.setString("curFirstViewPage", curFirstViewPage);
+                infoGv.set("curVisitorPages", curVisitorPages.longValue());
+                infoGv.set("preVisitPages", preVisitPages.longValue());
+                infoGv.setString("operatingSystem", operatingSystem);
+                infoGv.setString("browser", browser);
+                infoGv.setString("info", info);
+                infoGv.setString("siteName", siteName);
+                infoGv.setString("siteId", siteId);
 
                 delegator.create(infoGv);
             }
@@ -326,6 +360,37 @@ public class MsgEvent {
                         .getSqlDate("lastChangeTime") : null;
 
                 cardGv.setString("yongHeUserId", yongHeUserId);
+                cardGv.setString("visitorId", visitorId);
+                cardGv.setString("linkman", linkman);
+                cardGv.setString("cusType", cusType);
+                cardGv.setString("compName", compName);
+                cardGv.setString("webUrl", webUrl);
+                cardGv.setString("mobile", mobile);
+                cardGv.setString("phone", phone);
+                cardGv.setString("qq", qq);
+                cardGv.setString("msn", msn);
+                cardGv.setString("email", email);
+                cardGv.setString("address", address);
+                cardGv.setString("birthday", birthday);
+                cardGv.setString("channelType", channelType);
+                cardGv.setString("remark", remark);
+                cardGv.setString("loginName", loginName);
+                cardGv.setString("userName", userName);
+                cardGv.setString("nickName", nickName);
+
+                cardGv.set("addtime", addtime);
+                cardGv.set("lastChangeTime", lastChangeTime);
+
+                cardGv.setString("col1", col1);
+                cardGv.setString("col2", col2);
+                cardGv.setString("col3", col3);
+                cardGv.setString("col4", col4);
+                cardGv.setString("col5", col5);
+                cardGv.setString("col6", col6);
+                cardGv.setString("col7", col7);
+                cardGv.setString("col8", col8);
+                cardGv.setString("col9", col9);
+
                 delegator.create(cardGv);
             }
         } catch (GenericEntityException e) {

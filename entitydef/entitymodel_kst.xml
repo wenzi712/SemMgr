@@ -67,7 +67,7 @@
         <field name="sourceUrl" type="url">
             <description>来源网页</description>
         </field>
-        <field name="sourceType" type="indicator">
+        <field name="sourceType" type="name">
             <description>来源类型</description>
         </field>
         <field name="searchEngine" type="name">
@@ -105,6 +105,16 @@
         </field>
         <field name="info" type="very-long">
             <description>对话说明</description>
+        </field>
+
+        <field name="diaStartTime" type="date">
+            <description>对话开始时间</description>
+        </field>
+        <field name="diaEndTime" type="date">
+            <description>对话结束时间</description>
+        </field>
+        <field name="dialogType" type="name">
+            <description>对话类型</description>
         </field>
 
         <prim-key field="recId" />
@@ -220,7 +230,10 @@
         <field name="lastChangeTime" type="date">
             <description>最后修改时间</description>
         </field>
-
+        
+        <field name="channelType" type="name">
+            <description>channelType</description>
+        </field>
         <field name="yongHeUserId" type="name">
             <description>yongHeUserID</description>
         </field>
