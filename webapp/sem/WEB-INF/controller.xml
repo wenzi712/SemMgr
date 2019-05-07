@@ -115,8 +115,8 @@
     <!-- 快商通推送数据接口 -->
     <request-map uri="receivingData">
         <event type="java" path="com.yhsem.kst.MsgEvent" invoke="receivingData"/>
-        <response name="success" type="none" />
-        <response name="error" type="none" />
+        <response name="success" type="request" value="json" />
+        <response name="error" type="request" value="json" />
     </request-map>
     
     <!-- View Mappings -->
