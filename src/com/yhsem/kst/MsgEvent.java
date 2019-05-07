@@ -8,6 +8,10 @@
  */
 package com.yhsem.kst;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.sql.Date;
 import java.util.Map;
 
@@ -51,6 +55,53 @@ public class MsgEvent {
     }
 
     public static String receivingData(HttpServletRequest request, HttpServletResponse response) {
+        Delegator delegator = (Delegator) request.getAttribute("delegator");
+        JSONObject demo = null;
+        try {
+            demo = getJsonObject(request);
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+
+        if (UtilValidate.isNotEmpty(demo) && UtilValidate.isNotEmpty(demo.getJSONObject("data"))
+                && (!demo.getJSONObject("data").isEmpty())) {
+            JSONObject data = demo.getJSONObject("data");
+            JSONObject info = data.getJSONObject("visitorInfo");
+            JSONObject card = data.getJSONObject("visitorCard");
+            Debug.logError("info" + info.toJSONString(), module);
+            Debug.logError("card" + card.toJSONString(), module);
+            boolean beganTransaction = false;
+            try {
+                beganTransaction = TransactionUtil.begin();
+                boolean r = processingData(delegator, info, card);
+                if (r) {
+                    request.setAttribute("message", "ok");
+                    return "success";
+                } else {
+                    request.setAttribute("message", "error");
+                    return "error";
+                }
+            } catch (GenericEntityException e) {
+                try {
+                    TransactionUtil.rollback(beganTransaction, e.getLocalizedMessage(), e);
+                } catch (GenericEntityException e2) {
+                    Debug.logError(e2, "Could not rollback transaction: " + e2.toString(), module);
+                }
+                request.setAttribute("message", "error");
+                return "error";
+            } finally {
+                try {
+                    TransactionUtil.commit(beganTransaction);
+                } catch (GenericEntityException e) {
+                    Debug.logError(e, e.getLocalizedMessage(), module);
+                }
+            }
+        }
+        request.setAttribute("message", "ok");
+        return "success";
+    }
+
+    public static String _receivingData0(HttpServletRequest request, HttpServletResponse response) {
         Delegator delegator = (Delegator) request.getAttribute("delegator");
 
         Map<String, String[]> paraMap = request.getParameterMap();
@@ -497,4 +548,28 @@ public class MsgEvent {
 
     }
 
+    public static JSONObject getJsonObject(HttpServletRequest request) throws IOException {
+        String resultStr = "";
+        String readLine;
+        StringBuffer sb = new StringBuffer();
+        BufferedReader responseReader = null;
+        OutputStream outputStream = null;
+        try {
+            // responseReader = new BufferedReader(new
+            // InputStreamReader(request.getInputStream(), "UTF-8"));
+            responseReader = new BufferedReader(new InputStreamReader(request.getInputStream()));
+            while ((readLine = responseReader.readLine()) != null) {
+                sb.append(readLine).append("\n");
+            }
+            responseReader.close();
+            resultStr = sb.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (outputStream != null) {
+                outputStream.close();
+            }
+        }
+        return JSONObject.parseObject(resultStr);
+    }
 }
