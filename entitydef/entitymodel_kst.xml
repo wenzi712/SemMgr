@@ -43,13 +43,13 @@
         <field name="totalVisitTime" type="numeric">
             <description>累计来访次数</description>
         </field>
-        <field name="firstCsId" type="name">
+        <field name="firstCsId" type="value">
             <description>初次接待客服</description>
         </field>
         <field name="diaPage" type="url">
             <description>发起对话网址</description>
         </field>
-        <field name="joinCsIds" type="name">
+        <field name="joinCsIds" type="value">
             <description>参与接待客服</description>
         </field>
         <field name="curStayTime" type="numeric">
