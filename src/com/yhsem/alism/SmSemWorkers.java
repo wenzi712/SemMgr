@@ -68,10 +68,10 @@ public class SmSemWorkers {
             // if (!b) {
             // return false;
             // }
-            String reportFileCsv = "D:/logs/" + fileId + ".csv";
+            String reportFileCsv = SmConstant.RPT_FOLDER + fileId + ".csv";
             File file = new File(reportFileCsv);
             InputStream input = new FileInputStream(file);
-            CSVReader c = new CSVReader(new InputStreamReader(input, "GBK"), ',');
+            CSVReader c = new CSVReader(new InputStreamReader(input, "UTF-8"), ',');
             String[] nextLine;
             int n = 0;
             while ((nextLine = c.readNext()) != null) {
@@ -130,10 +130,10 @@ public class SmSemWorkers {
             if (!b) {
                 return false;
             }
-            String reportFileCsv = "D:/logs/" + fileId + ".csv";
+            String reportFileCsv = SmConstant.RPT_FOLDER + fileId + ".csv";
             File file = new File(reportFileCsv);
             InputStream input = new FileInputStream(file);
-            CSVReader c = new CSVReader(new InputStreamReader(input, "GBK"), ',');
+            CSVReader c = new CSVReader(new InputStreamReader(input, "UTF-8"), ',');
             String[] nextLine;
             int n = 0;
             while ((nextLine = c.readNext()) != null) {

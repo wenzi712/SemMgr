@@ -8,6 +8,8 @@
  */
 package com.yhsem.alism;
 
+import org.ofbiz.base.util.UtilProperties;
+
 /**
  * 
  * <b>类名称：</b>SmConstant<br/>
@@ -22,6 +24,9 @@ package com.yhsem.alism;
  * 
  */
 public class SmConstant {
+
+    public static String RPT_FOLDER = UtilProperties.getPropertyValue("sem.properties", "SM_FOLDR_PATH");
+
     /**
      * @Fields HOST_URL : API请求地址 URL
      */

@@ -79,11 +79,11 @@ public class SmHttpClientUtil {
 
     public static boolean postRequestDownloadCsv(String url, String username, String password, String token, Long fileId) {
         boolean r = true;
-        
+
         if (UtilValidate.isEmpty(fileId) || UtilValidate.areEqual(0L, fileId)) {
             return false;
         }
-        
+
         DefaultHttpClient httpsclient = new DefaultHttpClient();
         try {
             HttpPost httpost = new HttpPost(url);
@@ -100,7 +100,7 @@ public class SmHttpClientUtil {
             HttpResponse response = httpsclient.execute(httpost);
 
             InputStream input = response.getEntity().getContent();
-            String reportFileCsv = "D:/logs/" + fileId + ".csv";
+            String reportFileCsv = SmConstant.RPT_FOLDER + fileId + ".csv";
             File file = new File(reportFileCsv);
             if (!file.exists()) {
                 file.createNewFile();
