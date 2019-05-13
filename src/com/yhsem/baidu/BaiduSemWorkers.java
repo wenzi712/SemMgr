@@ -47,18 +47,19 @@ public class BaiduSemWorkers {
     public static final String module = BaiduSemWorkers.class.getName();
 
     public static boolean processingReport(DispatchContext dctx, GenericValue userLogin, String accountId,
-            Date rptDate, String rptTypeId, String fileUrl) throws IOException, GenericServiceException,
-            GenericEntityException {
+            String infoFlow, Date rptDate, String rptTypeId, String fileUrl) throws IOException,
+            GenericServiceException, GenericEntityException {
         if (UtilValidate.areEqual("REGION", rptTypeId)) {
-            return processingRegionReport(dctx, userLogin, accountId, rptDate, fileUrl);
+            return processingRegionReport(dctx, userLogin, accountId, infoFlow, rptDate, fileUrl);
         } else if (UtilValidate.areEqual("KEYWORD", rptTypeId)) {
-            return processingKeywordReport(dctx, userLogin, accountId, rptDate, fileUrl);
+            return processingKeywordReport(dctx, userLogin, accountId, infoFlow, rptDate, fileUrl);
         }
         return false;
     }
 
     public static boolean processingRegionReport(DispatchContext dctx, GenericValue userLogin, String accountId,
-            Date rptDate, String fileUrl) throws IOException, GenericServiceException, GenericEntityException {
+            String infoFlow, Date rptDate, String fileUrl) throws IOException, GenericServiceException,
+            GenericEntityException {
         LocalDispatcher dispatcher = dctx.getDispatcher();
         Delegator delegator = dctx.getDelegator();
 
@@ -98,6 +99,7 @@ public class BaiduSemWorkers {
                     paramMap.put("locatingMethod", null);
                     paramMap.put("planId", null);
                     paramMap.put("planName", null);
+                    paramMap.put("infoFlow", infoFlow);
 
                     paramMap.put("userLogin", userLogin);
                     Map<String, Object> createSemRegionRptMap = createSemRegionRptService.makeValid(paramMap,
@@ -111,7 +113,8 @@ public class BaiduSemWorkers {
     }
 
     public static boolean processingKeywordReport(DispatchContext dctx, GenericValue userLogin, String accountId,
-            Date rptDate, String fileUrl) throws IOException, GenericServiceException, GenericEntityException {
+            String infoFlow, Date rptDate, String fileUrl) throws IOException, GenericServiceException,
+            GenericEntityException {
         LocalDispatcher dispatcher = dctx.getDispatcher();
         Delegator delegator = dctx.getDelegator();
 
@@ -152,6 +155,7 @@ public class BaiduSemWorkers {
                     paramMap.put("conversion", new BigDecimal(nextLine[15]));
                     paramMap.put("bridgeConversion", BigDecimal.ZERO);
                     paramMap.put("locatingMethod", null);
+                    paramMap.put("infoFlow", infoFlow);
 
                     paramMap.put("userLogin", userLogin);
                     Map<String, Object> createSemKeyWordRptMap = createSemKeyWordRptService.makeValid(paramMap,
