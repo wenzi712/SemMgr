@@ -8,6 +8,11 @@
  */
 package com.yhsem.kst;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.sql.Date;
 import java.util.Map;
 
@@ -52,17 +57,13 @@ public class MsgEvent {
 
     public static String receivingData(HttpServletRequest request, HttpServletResponse response) {
         Delegator delegator = (Delegator) request.getAttribute("delegator");
-
+        boolean r = true;
         Map<String, String[]> paraMap = request.getParameterMap();
         if (UtilValidate.isNotEmpty(paraMap) && UtilValidate.isNotEmpty(paraMap.get("data"))) {
-
             String[] dataArray = paraMap.get("data");
             JSONObject info = null;
             JSONObject card = null;
             for (int i = 0; i < dataArray.length; i++) {
-                Debug.logError("*********" + i + "*********", module);
-                Debug.logError("***" + dataArray[i], module);
-                Debug.logError("*********" + i + "*********", module);
                 Object tmp = JSON.parse(dataArray[i]);
                 JSONObject t = (JSONObject) tmp;
                 if (t.containsKey("recId")) {
@@ -76,7 +77,122 @@ public class MsgEvent {
             boolean beganTransaction = false;
             try {
                 beganTransaction = TransactionUtil.begin();
+                if (info != null && !info.isEmpty()) {
+                    r = processingVisitorInfoData(delegator, info);
+                } else if (card != null && !card.isEmpty()) {
+                    r = processingVisitorCardData(delegator, card);
+                }
+            } catch (GenericEntityException e) {
+                try {
+                    TransactionUtil.rollback(beganTransaction, e.getLocalizedMessage(), e);
+                } catch (GenericEntityException e2) {
+                    Debug.logError(e2, "Could not rollback transaction: " + e2.toString(), module);
+                }
+            } finally {
+                try {
+                    TransactionUtil.commit(beganTransaction);
+                } catch (GenericEntityException e) {
+                    Debug.logError(e, e.getLocalizedMessage(), module);
+                }
+            }
+        }
+
+        String s = "";
+        if (r) {
+            s = "ok";
+        } else {
+            s = "error";
+        }
+
+        PrintWriter pw = null;
+        try {
+            pw = response.getWriter();
+            pw.print(s);
+            pw.flush();
+        } catch (IOException e) {
+            Debug.logError(e, module);
+        } finally {
+            pw.close();
+        }
+        return "success";
+    }
+    public static String receivingData00(HttpServletRequest request, HttpServletResponse response) {
+        Delegator delegator = (Delegator) request.getAttribute("delegator");
+        JSONObject demo = null;
+        try {
+            demo = getJsonObject(request);
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+
+        if (UtilValidate.isNotEmpty(demo) && UtilValidate.isNotEmpty(demo.getJSONObject("data"))
+                && (!demo.getJSONObject("data").isEmpty())) {
+            JSONObject data = demo.getJSONObject("data");
+            JSONObject info = data.getJSONObject("visitorInfo");
+            JSONObject card = data.getJSONObject("visitorCard");
+            Debug.logError("info" + info.toJSONString(), module);
+            Debug.logError("card" + card.toJSONString(), module);
+            boolean beganTransaction = false;
+            try {
+                beganTransaction = TransactionUtil.begin();
                 boolean r = processingData(delegator, info, card);
+                if (r) {
+                    request.setAttribute("message", "ok");
+                    return "success";
+                } else {
+                    request.setAttribute("message", "error");
+                    return "error";
+                }
+            } catch (GenericEntityException e) {
+                try {
+                    TransactionUtil.rollback(beganTransaction, e.getLocalizedMessage(), e);
+                } catch (GenericEntityException e2) {
+                    Debug.logError(e2, "Could not rollback transaction: " + e2.toString(), module);
+                }
+                request.setAttribute("message", "error");
+                return "error";
+            } finally {
+                try {
+                    TransactionUtil.commit(beganTransaction);
+                } catch (GenericEntityException e) {
+                    Debug.logError(e, e.getLocalizedMessage(), module);
+                }
+            }
+        }
+        request.setAttribute("message", "ok");
+        return "success";
+    }
+
+    public static String ___receivingData(HttpServletRequest request, HttpServletResponse response) {
+        Delegator delegator = (Delegator) request.getAttribute("delegator");
+
+        Map<String, String[]> paraMap = request.getParameterMap();
+        if (UtilValidate.isNotEmpty(paraMap) && UtilValidate.isNotEmpty(paraMap.get("data"))) {
+
+            String[] dataArray = paraMap.get("data");
+            JSONObject info = null;
+            JSONObject card = null;
+            for (int i = 0; i < dataArray.length; i++) {
+                Object tmp = JSON.parse(dataArray[i]);
+                JSONObject t = (JSONObject) tmp;
+                if (t.containsKey("recId")) {
+                    info = t;
+                } else if (t.containsKey("visitorId")) {
+                    card = t;
+                }
+
+            }
+
+            boolean beganTransaction = false;
+            try {
+                beganTransaction = TransactionUtil.begin();
+                boolean r = true;
+                if (info != null && !info.isEmpty()) {
+                    r = processingVisitorInfoData(delegator, info);
+                } else if (card != null && !card.isEmpty()) {
+                    r = processingVisitorCardData(delegator, card);
+                }
+
                 if (r) {
                     request.setAttribute("message", "ok");
                     return "success";
@@ -208,10 +324,6 @@ public class MsgEvent {
     }
 
     public static boolean processingData(Delegator delegator, JSONObject info, JSONObject card) {
-        if (info.isEmpty() && card.isEmpty()) {
-            return true;
-        }
-
         boolean r1 = true;
         if (info != null && !info.isEmpty()) {
             r1 = processingVisitorInfoData(delegator, info);
@@ -220,7 +332,6 @@ public class MsgEvent {
         if (card != null && !card.isEmpty()) {
             r2 = processingVisitorCardData(delegator, card);
         }
-        // 只有处理失败才返回错误
         if (r1 && r2) {
             return true;
         } else {
@@ -497,4 +608,28 @@ public class MsgEvent {
 
     }
 
+    public static JSONObject getJsonObject(HttpServletRequest request) throws IOException {
+        String resultStr = "";
+        String readLine;
+        StringBuffer sb = new StringBuffer();
+        BufferedReader responseReader = null;
+        OutputStream outputStream = null;
+        try {
+            // responseReader = new BufferedReader(new
+            // InputStreamReader(request.getInputStream(), "UTF-8"));
+            responseReader = new BufferedReader(new InputStreamReader(request.getInputStream()));
+            while ((readLine = responseReader.readLine()) != null) {
+                sb.append(readLine).append("\n");
+            }
+            responseReader.close();
+            resultStr = sb.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (outputStream != null) {
+                outputStream.close();
+            }
+        }
+        return JSONObject.parseObject(resultStr);
+    }
 }

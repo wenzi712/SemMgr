@@ -30,6 +30,7 @@ import org.ofbiz.service.LocalDispatcher;
 import org.ofbiz.service.ModelService;
 import org.ofbiz.service.ServiceUtil;
 
+import com.yhsem.alism.SmSemWorkers;
 import com.yhsem.baidu.AccountInstance;
 import com.yhsem.baidu.BaiduSemWorkers;
 import com.yhsem.baidu.ReportInstance;
@@ -225,6 +226,57 @@ public class RptServices {
                     }
                 } else if (UtilValidate.areEqual("SM", channelId)) {
 
+                    // 区域报告
+                    try {
+                        com.yhsem.alism.ReportInstance report = new com.yhsem.alism.ReportInstance();
+
+                        GenericValue record1 = EntityUtil.getFirst(delegator.findByAnd("SemRptRecord", UtilMisc.toMap(
+                                "accountId", accountId, "rptDate", rptDate, "rptTypeId", "REGION", "infoFlow", "0"),
+                                UtilMisc.toList("accountId"), false));
+                        String reportId = null;
+                        // 数据为空则新建
+                        if (UtilValidate.isEmpty(record1)) {
+                            reportId = report.getRegionReportId(delegator, acct);
+                            ModelService createSemRptRecordService = dispatcher.getDispatchContext().getModelService(
+                                    "createSemRptRecord");
+                            Map<String, Object> paramMap = FastMap.newInstance();
+                            paramMap.putAll(UtilMisc.toMap("recordId", delegator.getNextSeqId("SemRptRecord"),
+                                    "accountId", accountId, "rptDate", rptDate, "rptTypeId", "REGION"));
+                            paramMap.putAll(UtilMisc.toMap("infoFlow", "0", "isFinished", "0", "reportId", reportId,
+                                    "requestTime", UtilDateTime.nowTimestamp()));
+                            paramMap.put("userLogin", userLogin);
+                            Map<String, Object> createSemRptRecordMap = createSemRptRecordService.makeValid(paramMap,
+                                    ModelService.IN_PARAM);
+                            dispatcher.runSync(createSemRptRecordService.name, createSemRptRecordMap);
+                        }
+
+                        // 关键词报告
+                        GenericValue record2 = EntityUtil.getFirst(delegator.findByAnd("SemRptRecord", UtilMisc.toMap(
+                                "accountId", accountId, "rptDate", rptDate, "rptTypeId", "KEYWORD", "infoFlow", "0"),
+                                UtilMisc.toList("accountId"), false));
+                        // 获取报告ID
+                        String reportId2 = null;
+                        if (UtilValidate.isEmpty(record2)) {
+                            reportId2 = report.getKeywordReportId(delegator, acct);
+
+                            ModelService createSemRptRecordService = dispatcher.getDispatchContext().getModelService(
+                                    "createSemRptRecord");
+                            Map<String, Object> paramMap = FastMap.newInstance();
+                            paramMap.putAll(UtilMisc.toMap("recordId", delegator.getNextSeqId("SemRptRecord"),
+                                    "accountId", accountId, "rptDate", rptDate, "rptTypeId", "KEYWORD"));
+                            paramMap.putAll(UtilMisc.toMap("infoFlow", "0", "isFinished", "0", "reportId", reportId2,
+                                    "requestTime", UtilDateTime.nowTimestamp()));
+                            paramMap.put("userLogin", userLogin);
+                            Map<String, Object> createSemRptRecordMap = createSemRptRecordService.makeValid(paramMap,
+                                    ModelService.IN_PARAM);
+                            dispatcher.runSync(createSemRptRecordService.name, createSemRptRecordMap);
+                        }
+                    } catch (GenericEntityException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                 }
 
             }
@@ -290,6 +342,16 @@ public class RptServices {
                                         UtilDateTime.getDayEnd(new Timestamp(rptDate.getTime())));
                             }
                         } else if (UtilValidate.areEqual("SM", channelId)) {
+                            com.yhsem.alism.ReportInstance report = new com.yhsem.alism.ReportInstance();
+                            if (UtilValidate.areEqual("REGION", record.getString("rptTypeId"))) {// 区域报表
+                                reportId = report.getRegionReportId(delegator, acct,
+                                        UtilDateTime.getDayStart(new Timestamp(rptDate.getTime())),
+                                        UtilDateTime.getDayEnd(new Timestamp(rptDate.getTime())));
+                            } else {// 关键词报告
+                                reportId = report.getKeywordReportId(delegator, acct,
+                                        UtilDateTime.getDayStart(new Timestamp(rptDate.getTime())),
+                                        UtilDateTime.getDayEnd(new Timestamp(rptDate.getTime())));
+                            }
 
                         }
 
@@ -342,35 +404,44 @@ public class RptServices {
                     if (UtilValidate.isNotEmpty(acct)) {
                         String channelId = acct.getString("channelId");
                         String reportId = record.getString("reportId");
-                        String statusId = null;
+                        if (UtilValidate.isNotEmpty(reportId)) {
+                            String statusId = null;
+                            Map<String, String> smStatus = null;
+                            if (UtilValidate.areEqual("BD", channelId)) {
+                                AccountInstance account = new AccountInstance(acct.getString("accountName"),
+                                        acct.getString("accountPwd"), acct.getString("accountToken"));
+                                ReportInstance report = new ReportInstance(account);
 
-                        if (UtilValidate.areEqual("BD", channelId)) {
-                            AccountInstance account = new AccountInstance(acct.getString("accountName"),
-                                    acct.getString("accountPwd"), acct.getString("accountToken"));
-                            ReportInstance report = new ReportInstance(account);
+                                statusId = report.getReportStateByReportId(delegator, reportId).toString();
+                            } else if (UtilValidate.areEqual("SG", channelId)) {
+                                com.yhsem.sogou.ReportInstance report = new com.yhsem.sogou.ReportInstance(
+                                        acct.getString("accountName"), acct.getString("accountPwd"),
+                                        acct.getString("accountToken"));
+                                statusId = report.getReportStateByReportId(delegator, reportId).toString();
+                            } else if (UtilValidate.areEqual("SM", channelId)) {
+                                com.yhsem.alism.ReportInstance report = new com.yhsem.alism.ReportInstance();
+                                smStatus = report.getReportStateAndFileIdByReportId(delegator, acct, reportId);
+                            }
+                            boolean beganTransaction = false;
+                            try {
+                                beganTransaction = TransactionUtil.begin();
+                                if (UtilValidate.areEqual("SM", channelId)) {
+                                    record.set("statusId", smStatus.get("status"));
+                                    record.set("statusTime", UtilDateTime.nowTimestamp());
 
-                            statusId = report.getReportStateByReportId(delegator, reportId).toString();
-                        } else if (UtilValidate.areEqual("SG", channelId)) {
-                            com.yhsem.sogou.ReportInstance report = new com.yhsem.sogou.ReportInstance(
-                                    acct.getString("accountName"), acct.getString("accountPwd"),
-                                    acct.getString("accountToken"));
-                            statusId = report.getReportStateByReportId(delegator, reportId).toString();
-                        } else if (UtilValidate.areEqual("SM", channelId)) {
-
-                        }
-                        boolean beganTransaction = false;
-                        try {
-                            beganTransaction = TransactionUtil.begin();
-
-                            record.set("statusId", statusId);
-                            record.set("statusTime", UtilDateTime.nowTimestamp());
-
-                            delegator.store(record);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            TransactionUtil.rollback(beganTransaction, e.getMessage(), e);
-                        } finally {
-                            TransactionUtil.commit(beganTransaction);
+                                    record.set("fileUrl", smStatus.get("fileId"));
+                                    record.set("fileUrlTime", UtilDateTime.nowTimestamp());
+                                } else {
+                                    record.set("statusId", statusId);
+                                    record.set("statusTime", UtilDateTime.nowTimestamp());
+                                }
+                                delegator.store(record);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                TransactionUtil.rollback(beganTransaction, e.getMessage(), e);
+                            } finally {
+                                TransactionUtil.commit(beganTransaction);
+                            }
                         }
                     }
                 } catch (GenericEntityException e) {
@@ -406,6 +477,7 @@ public class RptServices {
                         String channelId = acct.getString("channelId");
                         String reportId = record.getString("reportId");
                         String fileUrl = null;
+                        Map<String, String> smStatus = null;
 
                         if (UtilValidate.areEqual("BD", channelId)) {
                             AccountInstance account = new AccountInstance(acct.getString("accountName"),
@@ -419,7 +491,9 @@ public class RptServices {
                                     acct.getString("accountToken"));
                             fileUrl = report.getReportFileUrlByReportId(delegator, reportId);
                         } else if (UtilValidate.areEqual("SM", channelId)) {
-
+                            com.yhsem.alism.ReportInstance report = new com.yhsem.alism.ReportInstance();
+                            smStatus = report.getReportStateAndFileIdByReportId(delegator, acct, reportId);
+                            fileUrl = smStatus.get("fileId");
                         }
                         boolean beganTransaction = false;
                         try {
@@ -481,14 +555,16 @@ public class RptServices {
                         String rptTypeId = record.getString("rptTypeId");
                         boolean finished = false;
                         if (UtilValidate.areEqual("BD", channelId)) {
-                            finished = BaiduSemWorkers.processingReport(dctx, userLogin, accountId, rptDate, rptTypeId,
-                                    fileUrl);
+                            String infoFlow = acct.getString("infoFlow");
+                            finished = BaiduSemWorkers.processingReport(dctx, userLogin, accountId, infoFlow, rptDate,
+                                    rptTypeId, fileUrl);
                             // 处理百度数据
                         } else if (UtilValidate.areEqual("SG", channelId)) {
                             finished = SogouSemWorkers.processingReport(dctx, userLogin, accountId, rptDate, rptTypeId,
                                     fileUrl, reportId);
                         } else if (UtilValidate.areEqual("SM", channelId)) {
-
+                            finished = SmSemWorkers
+                                    .processingReport(dctx, userLogin, acct, rptDate, rptTypeId, fileUrl);
                         }
                         if (finished) {
                             boolean beganTransaction = false;
