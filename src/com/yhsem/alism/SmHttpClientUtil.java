@@ -21,6 +21,8 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicHeader;
+import org.apache.http.protocol.HTTP;
 import org.ofbiz.base.util.UtilValidate;
 
 /**
@@ -95,8 +97,9 @@ public class SmHttpClientUtil {
             s = new String(s.getBytes("UTF-8"), "UTF-8");
 
             StringEntity strEntity = new StringEntity(s, Consts.UTF_8);
+            strEntity.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
             httpost.setEntity(strEntity);
-
+            // httpost.setHeader(name, value)
             HttpResponse response = httpsclient.execute(httpost);
 
             InputStream input = response.getEntity().getContent();

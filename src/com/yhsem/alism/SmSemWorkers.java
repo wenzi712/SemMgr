@@ -63,11 +63,10 @@ public class SmSemWorkers {
         List<GenericValue> recordList = delegator.findByAnd("SemRegionRpt",
                 UtilMisc.toMap("accountId", accountId, "rptDate", rptDate), null, false);
         if (UtilValidate.isEmpty(recordList)) {
-            // Boolean b = ReportInstance.getReportByFileId(delegator, acct,
-            // Long.valueOf(fileId));
-            // if (!b) {
-            // return false;
-            // }
+            Boolean b = ReportInstance.getReportByFileId(delegator, acct, Long.valueOf(fileId));
+            if (!b) {
+                return false;
+            }
             String reportFileCsv = SmConstant.RPT_FOLDER + fileId + ".csv";
             File file = new File(reportFileCsv);
             InputStream input = new FileInputStream(file);
