@@ -107,10 +107,10 @@
             <description>对话说明</description>
         </field>
 
-        <field name="diaStartTime" type="date">
+        <field name="diaStartTime" type="date-time">
             <description>对话开始时间</description>
         </field>
-        <field name="diaEndTime" type="date">
+        <field name="diaEndTime" type="date-time">
             <description>对话结束时间</description>
         </field>
         <field name="dialogType" type="name">

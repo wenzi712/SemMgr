@@ -14,6 +14,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -116,6 +117,7 @@ public class MsgEvent {
         }
         return "success";
     }
+
     public static String receivingData00(HttpServletRequest request, HttpServletResponse response) {
         Delegator delegator = (Delegator) request.getAttribute("delegator");
         JSONObject demo = null;
@@ -377,10 +379,10 @@ public class MsgEvent {
                         .getString("requestType") : null;
                 String endType = UtilValidate.isNotEmpty(visitorInfo.getString("endType")) ? visitorInfo
                         .getString("endType") : null;
-                Date diaStartTime = UtilValidate.isNotEmpty(visitorInfo.getSqlDate("diaStartTime")) ? visitorInfo
-                        .getSqlDate("diaStartTime") : null;
-                Date diaEndTime = UtilValidate.isNotEmpty(visitorInfo.getSqlDate("diaEndTime")) ? visitorInfo
-                        .getSqlDate("diaEndTime") : null;
+                Timestamp diaStartTime = UtilValidate.isNotEmpty(visitorInfo.getTimestamp("diaStartTime")) ? visitorInfo
+                        .getTimestamp("diaStartTime") : null;
+                Timestamp diaEndTime = UtilValidate.isNotEmpty(visitorInfo.getTimestamp("diaEndTime")) ? visitorInfo
+                        .getTimestamp("diaEndTime") : null;
                 String terminalType = UtilValidate.isNotEmpty(visitorInfo.getString("terminalType")) ? visitorInfo
                         .getString("terminalType") : null;
                 Integer visitorSendNum = UtilValidate.isNotEmpty(visitorInfo.getInteger("visitorSendNum")) ? visitorInfo
