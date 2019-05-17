@@ -22,10 +22,10 @@
         <field name="visitorName" type="name">
             <description>访客名称</description>
         </field>
-        <field name="curEnterTime" type="date">
+        <field name="curEnterTime" type="date-time">
             <description>当前进入网站时间</description>
         </field>
-        <field name="firstVisitTime" type="date">
+        <field name="firstVisitTime" type="date-time">
             <description>最初访问时间</description>
         </field>
         <field name="siteId" type="id">
@@ -37,7 +37,7 @@
         <field name="curFirstViewPage" type="url">
             <description>本次最初访问网页</description>
         </field>
-        <field name="preVisitTime" type="date">
+        <field name="preVisitTime" type="date-time">
             <description>上一次访问时间</description>
         </field>
         <field name="totalVisitTime" type="numeric">

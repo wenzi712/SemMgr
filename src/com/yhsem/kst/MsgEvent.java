@@ -365,8 +365,8 @@ public class MsgEvent {
                         .getString("visitorId") : null;
                 String visitorName = UtilValidate.isNotEmpty(visitorInfo.getString("visitorName")) ? visitorInfo
                         .getString("visitorName") : null;
-                Date curEnterTime = UtilValidate.isNotEmpty(visitorInfo.getSqlDate("curEnterTime")) ? visitorInfo
-                        .getSqlDate("curEnterTime") : null;
+                Timestamp curEnterTime = UtilValidate.isNotEmpty(visitorInfo.getTimestamp("curEnterTime")) ? visitorInfo
+                        .getTimestamp("curEnterTime") : null;
                 Integer curStayTime = UtilValidate.isNotEmpty(visitorInfo.getInteger("curStayTime")) ? visitorInfo
                         .getInteger("curStayTime") : 0;
                 String sourceIp = UtilValidate.isNotEmpty(visitorInfo.getString("sourceIp")) ? visitorInfo
@@ -403,10 +403,10 @@ public class MsgEvent {
                         .getString("joinCsIds") : null;
                 String dialogType = UtilValidate.isNotEmpty(visitorInfo.getString("dialogType")) ? visitorInfo
                         .getString("dialogType") : null;
-                Date firstVisitTime = UtilValidate.isNotEmpty(visitorInfo.getSqlDate("firstVisitTime")) ? visitorInfo
-                        .getSqlDate("firstVisitTime") : null;
-                Date preVisitTime = UtilValidate.isNotEmpty(visitorInfo.getSqlDate("preVisitTime")) ? visitorInfo
-                        .getSqlDate("preVisitTime") : null;
+                Timestamp firstVisitTime = UtilValidate.isNotEmpty(visitorInfo.getTimestamp("firstVisitTime")) ? visitorInfo
+                        .getTimestamp("firstVisitTime") : null;
+                Timestamp preVisitTime = UtilValidate.isNotEmpty(visitorInfo.getTimestamp("preVisitTime")) ? visitorInfo
+                        .getTimestamp("preVisitTime") : null;
                 Integer totalVisitTime = UtilValidate.isNotEmpty(visitorInfo.getInteger("totalVisitTime")) ? visitorInfo
                         .getInteger("totalVisitTime") : 0;
                 String diaPage = UtilValidate.isNotEmpty(visitorInfo.getString("diaPage")) ? visitorInfo
