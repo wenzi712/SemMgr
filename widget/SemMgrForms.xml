@@ -63,6 +63,9 @@
         <field name="accountToken" title="App Token">
             <display />
         </field>
+        <field name="apiSecret" title="API Secret">
+            <display />
+        </field>
     </form>
 
     <form name="EditSemAccount" type="single" target="updateSemAccount" title="EditSemAccount" default-map-name="account"
@@ -95,6 +98,9 @@
             <password client-autocomplete-field="false" maxlength="50" size="50" />
         </field>
         <field name="accountToken" title="App Token Id">
+            <text maxlength="50" size="50" client-autocomplete-field="false" />
+        </field>
+        <field name="apiSecret" title="360 API Secret">
             <text maxlength="50" size="50" client-autocomplete-field="false" />
         </field>
         <field name="valid" title="状态">
