@@ -353,8 +353,6 @@ public class MsgEvent {
         if (!visitorInfo.isEmpty()) {
             String recId = UtilValidate.isNotEmpty(visitorInfo.getString("recId")) ? visitorInfo.getString("recId")
                     : null;// 主键
-            Debug.logError("recId : " + recId, module);
-
             GenericValue infoGv = null;
             try {
                 infoGv = delegator.findOne("SemVisitorInfo", false, UtilMisc.toMap("recId", recId));
@@ -488,7 +486,6 @@ public class MsgEvent {
         if (!visitorCard.isEmpty()) {
             String visitorId = UtilValidate.isNotEmpty(visitorCard.getString("visitorId")) ? visitorCard
                     .getString("visitorId") : null;
-            Debug.logError("visitorId : " + visitorId, module);
 
             GenericValue cardGv = null;
             try {
