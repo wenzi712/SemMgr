@@ -11,6 +11,7 @@
     <SemChannel channelId="BD" channelName="百度"/>
     <SemChannel channelId="SG" channelName="搜狗"/>
     <SemChannel channelId="SM" channelName="神马"/>
+    <SemChannel channelId="QH" channelName="360"/>
     <SemChannel channelId="KST" channelName="快商通"/>
     
     <!-- 词类明细表 -->
