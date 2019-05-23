@@ -113,7 +113,7 @@
     </request-map>
     
     <!-- 快商通推送数据接口 -->
-    <request-map uri="receivingData">
+    <request-map uri="receivingData" track-serverhit="false" track-visit="false">
         <event type="java" path="com.yhsem.kst.MsgEvent" invoke="receivingData"/>
         <response name="success" type="none"/>
         <response name="error" type="none"/>
