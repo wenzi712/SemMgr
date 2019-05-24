@@ -22,10 +22,10 @@
         <field name="visitorName" type="name">
             <description>访客名称</description>
         </field>
-        <field name="curEnterTime" type="date">
+        <field name="curEnterTime" type="date-time">
             <description>当前进入网站时间</description>
         </field>
-        <field name="firstVisitTime" type="date">
+        <field name="firstVisitTime" type="date-time">
             <description>最初访问时间</description>
         </field>
         <field name="siteId" type="id">
@@ -37,7 +37,7 @@
         <field name="curFirstViewPage" type="url">
             <description>本次最初访问网页</description>
         </field>
-        <field name="preVisitTime" type="date">
+        <field name="preVisitTime" type="date-time">
             <description>上一次访问时间</description>
         </field>
         <field name="totalVisitTime" type="numeric">
@@ -49,7 +49,7 @@
         <field name="diaPage" type="url">
             <description>发起对话网址</description>
         </field>
-        <field name="joinCsIds" type="value">
+        <field name="joinCsIds" type="very-long">
             <description>参与接待客服</description>
         </field>
         <field name="curStayTime" type="numeric">
@@ -107,10 +107,10 @@
             <description>对话说明</description>
         </field>
 
-        <field name="diaStartTime" type="date">
+        <field name="diaStartTime" type="date-time">
             <description>对话开始时间</description>
         </field>
-        <field name="diaEndTime" type="date">
+        <field name="diaEndTime" type="date-time">
             <description>对话结束时间</description>
         </field>
         <field name="dialogType" type="name">

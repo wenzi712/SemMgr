@@ -146,12 +146,13 @@ public class ReportInstance {
     }
 
     public static boolean getReportByFileId(Delegator delegator, GenericValue account, Long fileId) throws Exception {
-        return SmHttpClientUtil.postRequestDownloadCsv(SmConstant.HOST_URL + SmConstant.URI_GET_TASK_STATE,
+        return SmHttpClientUtil.postRequestDownloadCsv(SmConstant.HOST_URL + SmConstant.URI_DOWNLOAD,
                 account.getString("accountName"), account.getString("accountPwd"), account.getString("accountToken"),
                 fileId);
     }
 
     public static void main(String[] args) {
         ReportInstance ri = new ReportInstance();
+
     }
 }

@@ -92,6 +92,9 @@
         <field name="accountToken" type="short-varchar">
             <description>账户Token</description>
         </field>
+        <field name="apiSecret" type="short-varchar">
+            <description>账户 apiSecret</description>
+        </field>
         <field name="channelId" type="id">
             <description>渠道ID</description>
         </field>

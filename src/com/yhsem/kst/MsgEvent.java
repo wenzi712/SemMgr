@@ -14,6 +14,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -116,6 +117,7 @@ public class MsgEvent {
         }
         return "success";
     }
+
     public static String receivingData00(HttpServletRequest request, HttpServletResponse response) {
         Delegator delegator = (Delegator) request.getAttribute("delegator");
         JSONObject demo = null;
@@ -351,8 +353,6 @@ public class MsgEvent {
         if (!visitorInfo.isEmpty()) {
             String recId = UtilValidate.isNotEmpty(visitorInfo.getString("recId")) ? visitorInfo.getString("recId")
                     : null;// 主键
-            Debug.logError("recId : " + recId, module);
-
             GenericValue infoGv = null;
             try {
                 infoGv = delegator.findOne("SemVisitorInfo", false, UtilMisc.toMap("recId", recId));
@@ -363,8 +363,8 @@ public class MsgEvent {
                         .getString("visitorId") : null;
                 String visitorName = UtilValidate.isNotEmpty(visitorInfo.getString("visitorName")) ? visitorInfo
                         .getString("visitorName") : null;
-                Date curEnterTime = UtilValidate.isNotEmpty(visitorInfo.getSqlDate("curEnterTime")) ? visitorInfo
-                        .getSqlDate("curEnterTime") : null;
+                Timestamp curEnterTime = UtilValidate.isNotEmpty(visitorInfo.getTimestamp("curEnterTime")) ? visitorInfo
+                        .getTimestamp("curEnterTime") : null;
                 Integer curStayTime = UtilValidate.isNotEmpty(visitorInfo.getInteger("curStayTime")) ? visitorInfo
                         .getInteger("curStayTime") : 0;
                 String sourceIp = UtilValidate.isNotEmpty(visitorInfo.getString("sourceIp")) ? visitorInfo
@@ -377,10 +377,10 @@ public class MsgEvent {
                         .getString("requestType") : null;
                 String endType = UtilValidate.isNotEmpty(visitorInfo.getString("endType")) ? visitorInfo
                         .getString("endType") : null;
-                Date diaStartTime = UtilValidate.isNotEmpty(visitorInfo.getSqlDate("diaStartTime")) ? visitorInfo
-                        .getSqlDate("diaStartTime") : null;
-                Date diaEndTime = UtilValidate.isNotEmpty(visitorInfo.getSqlDate("diaEndTime")) ? visitorInfo
-                        .getSqlDate("diaEndTime") : null;
+                Timestamp diaStartTime = UtilValidate.isNotEmpty(visitorInfo.getTimestamp("diaStartTime")) ? visitorInfo
+                        .getTimestamp("diaStartTime") : null;
+                Timestamp diaEndTime = UtilValidate.isNotEmpty(visitorInfo.getTimestamp("diaEndTime")) ? visitorInfo
+                        .getTimestamp("diaEndTime") : null;
                 String terminalType = UtilValidate.isNotEmpty(visitorInfo.getString("terminalType")) ? visitorInfo
                         .getString("terminalType") : null;
                 Integer visitorSendNum = UtilValidate.isNotEmpty(visitorInfo.getInteger("visitorSendNum")) ? visitorInfo
@@ -401,10 +401,10 @@ public class MsgEvent {
                         .getString("joinCsIds") : null;
                 String dialogType = UtilValidate.isNotEmpty(visitorInfo.getString("dialogType")) ? visitorInfo
                         .getString("dialogType") : null;
-                Date firstVisitTime = UtilValidate.isNotEmpty(visitorInfo.getSqlDate("firstVisitTime")) ? visitorInfo
-                        .getSqlDate("firstVisitTime") : null;
-                Date preVisitTime = UtilValidate.isNotEmpty(visitorInfo.getSqlDate("preVisitTime")) ? visitorInfo
-                        .getSqlDate("preVisitTime") : null;
+                Timestamp firstVisitTime = UtilValidate.isNotEmpty(visitorInfo.getTimestamp("firstVisitTime")) ? visitorInfo
+                        .getTimestamp("firstVisitTime") : null;
+                Timestamp preVisitTime = UtilValidate.isNotEmpty(visitorInfo.getTimestamp("preVisitTime")) ? visitorInfo
+                        .getTimestamp("preVisitTime") : null;
                 Integer totalVisitTime = UtilValidate.isNotEmpty(visitorInfo.getInteger("totalVisitTime")) ? visitorInfo
                         .getInteger("totalVisitTime") : 0;
                 String diaPage = UtilValidate.isNotEmpty(visitorInfo.getString("diaPage")) ? visitorInfo
@@ -486,7 +486,6 @@ public class MsgEvent {
         if (!visitorCard.isEmpty()) {
             String visitorId = UtilValidate.isNotEmpty(visitorCard.getString("visitorId")) ? visitorCard
                     .getString("visitorId") : null;
-            Debug.logError("visitorId : " + visitorId, module);
 
             GenericValue cardGv = null;
             try {
