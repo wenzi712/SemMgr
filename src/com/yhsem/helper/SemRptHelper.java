@@ -45,7 +45,8 @@ public class SemRptHelper {
             EntityCondition ec2 = EntityCondition.makeCondition("reportId", EntityOperator.EQUALS, "");
             EntityCondition ec = EntityCondition.makeCondition(UtilMisc.toList(ec1, ec2), EntityOperator.OR);
 
-            return delegator.findList("SemRptRecord", ec, null, UtilMisc.toList("requestTime"), null, false);
+            return delegator.findList("SemRptRecord", ec, null, UtilMisc.toList("rptDate", "requestTime"), null,
+                    false);
         } catch (GenericEntityException e) {
             e.printStackTrace();
             return null;
@@ -63,7 +64,7 @@ public class SemRptHelper {
             EntityCondition ec1 = EntityCondition.makeCondition("statusId", EntityOperator.EQUALS, null);
             EntityCondition ec2 = EntityCondition.makeCondition("statusId", EntityOperator.NOT_EQUAL, "3");
             EntityCondition ec = EntityCondition.makeCondition(UtilMisc.toList(ec1, ec2), EntityOperator.OR);
-            return delegator.findList("SemRptRecord", ec, null, UtilMisc.toList("requestTime"), null, false);
+            return delegator.findList("SemRptRecord", ec, null, UtilMisc.toList("rptDate", "requestTime"), null, false);
         } catch (GenericEntityException e) {
             e.printStackTrace();
             return null;
@@ -81,7 +82,7 @@ public class SemRptHelper {
             EntityCondition ec1 = EntityCondition.makeCondition("statusId", EntityOperator.EQUALS, "3");
             EntityCondition ec2 = EntityCondition.makeCondition("fileUrl", EntityOperator.EQUALS, null);
             EntityCondition ec = EntityCondition.makeCondition(UtilMisc.toList(ec1, ec2));
-            return delegator.findList("SemRptRecord", ec, null, UtilMisc.toList("requestTime"), null, false);
+            return delegator.findList("SemRptRecord", ec, null, UtilMisc.toList("rptDate", "requestTime"), null, false);
         } catch (GenericEntityException e) {
             e.printStackTrace();
             return null;
@@ -100,7 +101,7 @@ public class SemRptHelper {
             EntityCondition ec2 = EntityCondition.makeCondition("fileUrl", EntityOperator.NOT_EQUAL, null);
             EntityCondition ec3 = EntityCondition.makeCondition("isFinished", EntityOperator.EQUALS, "0");
             EntityCondition ec = EntityCondition.makeCondition(UtilMisc.toList(ec1, ec2, ec3));
-            return delegator.findList("SemRptRecord", ec, null, UtilMisc.toList("requestTime"), null, false);
+            return delegator.findList("SemRptRecord", ec, null, UtilMisc.toList("rptDate", "requestTime"), null, false);
         } catch (GenericEntityException e) {
             e.printStackTrace();
             return null;
