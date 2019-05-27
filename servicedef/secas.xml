@@ -4,6 +4,9 @@
     <eca service="getDailyReport" event="return">
         <action service="queryReportStatus" mode="async" persist="true" run-as-user="system" />
     </eca>
+    <eca service="checkFailureReportRequest" event="return">
+        <action service="queryReportStatus" mode="async" persist="true" run-as-user="system" />
+    </eca>
     <eca service="queryReportStatus" event="return">
         <action service="queryReportFileUrl" mode="async" persist="true" run-as-user="system" />
     </eca>

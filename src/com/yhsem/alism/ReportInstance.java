@@ -79,7 +79,7 @@ public class ReportInstance {
         String startDateString = UtilDateTime.toDateString(startDate, "yyyy-MM-dd");
         String startEndString = UtilDateTime.toDateString(endDate, "yyyy-MM-dd");
         String body = "\"body\":{\"startDate\": \"" + startDateString + "\",\"endDate\": \"" + startEndString
-                + "\",\"reportType\":" + SmConstant.RPT_TYPE_REGION + ",\"unitOfTime\": 14}";
+                + "\",\"reportType\":" + SmConstant.RPT_TYPE_KEYWORD + ",\"unitOfTime\": 5}";
         String r = SmHttpClientUtil.postRequest(SmConstant.HOST_URL + SmConstant.URI_GET_REPORT,
                 account.getString("accountName"), account.getString("accountPwd"), account.getString("accountToken"),
                 body);

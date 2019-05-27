@@ -110,9 +110,6 @@ public class ReportInstance {
             type.setReportType(5);
             type.setStartDate(startDate);
             type.setEndDate(endDate);
-            if (infoFlow) {
-                type.setPlatform(23);// 信息流
-            }
 
             request.setReportRequestType(type);
             GetProfessionalReportIdResponse response = reportService.getProfessionalReportId(request);
@@ -175,9 +172,6 @@ public class ReportInstance {
             type.setReportType(9);
             type.setStartDate(startDate);
             type.setEndDate(endDate);
-            if (infoFlow) {
-                type.setPlatform(23);// 信息流
-            }
 
             request.setReportRequestType(type);
             GetProfessionalReportIdResponse response = reportService.getProfessionalReportId(request);
