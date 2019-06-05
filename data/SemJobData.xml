@@ -3,58 +3,52 @@
 
     <RecurrenceRule recurrenceRuleId="SEM001" frequency="DAILY" countNumber="-1" intervalNumber="1" />
 
-    <RecurrenceInfo recurrenceInfoId="SEM001" startDateTime="2019-03-01 00:20:00.0" recurrenceRuleId="SEM001"
+    <RecurrenceInfo recurrenceInfoId="SEM001" startDateTime="2019-03-01 08:30:00.0" recurrenceRuleId="SEM001"
         recurrenceCount="1" />
-    <JobSandbox jobId="SEM001" jobName="同步请求上日报表数据" runTime="2019-03-01 00:20:00.0" poolId="pool" runAsUser="system"
+    <JobSandbox jobId="SEM001" jobName="同步请求上日报表数据" runTime="2019-03-01 08:30:00.0" poolId="pool" runAsUser="system"
         statusId="SERVICE_PENDING" serviceName="getDailyReport" loaderName="default" maxRetry="0" currentRetryCount="0"
         recurrenceInfoId="SEM001" parentJobId="SEM001" previousJobId="SEM001" />
 
-    <RecurrenceInfo recurrenceInfoId="SEM002" startDateTime="2019-03-01 02:20:00.0" recurrenceRuleId="SEM001"
+    <RecurrenceInfo recurrenceInfoId="SEM002" startDateTime="2019-03-01 10:30:00.0" recurrenceRuleId="SEM001"
         recurrenceCount="1" />
-    <JobSandbox jobId="SEM002" jobName="同步请求上日报表数据" runTime="2019-03-01 02:20:00.0" poolId="pool" runAsUser="system"
+    <JobSandbox jobId="SEM002" jobName="同步请求上日报表数据" runTime="2019-03-01 10:30:00.0" poolId="pool" runAsUser="system"
         statusId="SERVICE_PENDING" serviceName="getDailyReport" loaderName="default" maxRetry="0" currentRetryCount="0"
         recurrenceInfoId="SEM002" parentJobId="SEM002" previousJobId="SEM002" />
 
-    <RecurrenceInfo recurrenceInfoId="SEM003" startDateTime="2019-03-01 08:30:00.0" recurrenceRuleId="SEM001"
+    <RecurrenceInfo recurrenceInfoId="SEM003" startDateTime="2019-03-01 12:30:00.0" recurrenceRuleId="SEM001"
         recurrenceCount="1" />
-    <JobSandbox jobId="SEM003" jobName="同步请求上日报表数据" runTime="2019-03-01 08:30:00.0" poolId="pool" runAsUser="system"
+    <JobSandbox jobId="SEM003" jobName="同步请求上日报表数据" runTime="2019-03-01 12:30:00.0" poolId="pool" runAsUser="system"
         statusId="SERVICE_PENDING" serviceName="getDailyReport" loaderName="default" maxRetry="0" currentRetryCount="0"
         recurrenceInfoId="SEM003" parentJobId="SEM003" previousJobId="SEM003" />
 
-    <RecurrenceInfo recurrenceInfoId="SEM004" startDateTime="2019-03-01 10:20:00.0" recurrenceRuleId="SEM001"
+    <RecurrenceInfo recurrenceInfoId="SEM201" startDateTime="2019-03-01 11:40:00.0" recurrenceRuleId="SEM001"
         recurrenceCount="1" />
-    <JobSandbox jobId="SEM004" jobName="同步请求上日报表数据" runTime="2019-03-01 10:20:00.0" poolId="pool" runAsUser="system"
-        statusId="SERVICE_PENDING" serviceName="getDailyReport" loaderName="default" maxRetry="0" currentRetryCount="0"
-        recurrenceInfoId="SEM004" parentJobId="SEM004" previousJobId="SEM004" />
-
-    <RecurrenceInfo recurrenceInfoId="SEM201" startDateTime="2019-03-01 05:40:00.0" recurrenceRuleId="SEM001"
-        recurrenceCount="1" />
-    <JobSandbox jobId="SEM201" jobName="检查并处理未处理数据的台账" runTime="2019-03-01 05:40:00.0" poolId="pool"
+    <JobSandbox jobId="SEM201" jobName="检查并处理未处理数据的台账" runTime="2019-03-01 11:40:00.0" poolId="pool"
         runAsUser="system" statusId="SERVICE_PENDING" serviceName="processingNotFinishedReports" loaderName="default"
         maxRetry="0" currentRetryCount="0" recurrenceInfoId="SEM201" parentJobId="SEM201" previousJobId="SEM201" />
 
-    <RecurrenceInfo recurrenceInfoId="SEM202" startDateTime="2019-03-01 08:50:00.0" recurrenceRuleId="SEM001"
+    <RecurrenceInfo recurrenceInfoId="SEM202" startDateTime="2019-03-01 13:50:00.0" recurrenceRuleId="SEM001"
         recurrenceCount="1" />
-    <JobSandbox jobId="SEM202" jobName="检查并处理未处理数据的台账" runTime="2019-03-01 08:50:00.0" poolId="pool"
+    <JobSandbox jobId="SEM202" jobName="检查并处理未处理数据的台账" runTime="2019-03-01 13:50:00.0" poolId="pool"
         runAsUser="system" statusId="SERVICE_PENDING" serviceName="processingNotFinishedReports" loaderName="default"
         maxRetry="0" currentRetryCount="0" recurrenceInfoId="SEM202" parentJobId="SEM202" previousJobId="SEM202" />
 
-    <RecurrenceInfo recurrenceInfoId="SEM203" startDateTime="2019-03-01 11:40:00.0" recurrenceRuleId="SEM001"
+    <RecurrenceInfo recurrenceInfoId="SEM203" startDateTime="2019-03-01 15:40:00.0" recurrenceRuleId="SEM001"
         recurrenceCount="1" />
-    <JobSandbox jobId="SEM203" jobName="检查并处理未处理数据的台账" runTime="2019-03-01 11:40:00.0" poolId="pool"
+    <JobSandbox jobId="SEM203" jobName="检查并处理未处理数据的台账" runTime="2019-03-01 15:40:00.0" poolId="pool"
         runAsUser="system" statusId="SERVICE_PENDING" serviceName="processingNotFinishedReports" loaderName="default"
         maxRetry="0" currentRetryCount="0" recurrenceInfoId="SEM203" parentJobId="SEM203" previousJobId="SEM203" />
 
 
-    <RecurrenceInfo recurrenceInfoId="SEM301" startDateTime="2019-03-01 04:00:00.0" recurrenceRuleId="SEM001"
+    <RecurrenceInfo recurrenceInfoId="SEM301" startDateTime="2019-03-01 9:40:00.0" recurrenceRuleId="SEM001"
         recurrenceCount="1" />
-    <JobSandbox jobId="SEM301" jobName="检查并处理有请求但是没有返回报告ID的台账,重新请求" runTime="2019-03-01 04:00:00.0" poolId="pool"
+    <JobSandbox jobId="SEM301" jobName="检查并处理有请求但是没有返回报告ID的台账,重新请求" runTime="2019-03-01 9:40:00.0" poolId="pool"
         runAsUser="system" statusId="SERVICE_PENDING" serviceName="checkFailureReportRequest" loaderName="default"
         maxRetry="0" currentRetryCount="0" recurrenceInfoId="SEM301" parentJobId="SEM301" previousJobId="SEM301" />
 
-    <RecurrenceInfo recurrenceInfoId="SEM302" startDateTime="2019-03-01 09:30:00.0" recurrenceRuleId="SEM001"
+    <RecurrenceInfo recurrenceInfoId="SEM302" startDateTime="2019-03-01 11:25:00.0" recurrenceRuleId="SEM001"
         recurrenceCount="1" />
-    <JobSandbox jobId="SEM302" jobName="检查并处理有请求但是没有返回报告ID的台账,重新请求" runTime="2019-03-01 09:30:00.0" poolId="pool"
+    <JobSandbox jobId="SEM302" jobName="检查并处理有请求但是没有返回报告ID的台账,重新请求" runTime="2019-03-01 11:25:00.0" poolId="pool"
         runAsUser="system" statusId="SERVICE_PENDING" serviceName="checkFailureReportRequest" loaderName="default"
         maxRetry="0" currentRetryCount="0" recurrenceInfoId="SEM302" parentJobId="SEM302" previousJobId="SEM302" />
 
