@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-engine-xml>
+
+    <RecurrenceRule recurrenceRuleId="BD_SEM001" frequency="DAILY" countNumber="-1" intervalNumber="1" />
+
+    <RecurrenceInfo recurrenceInfoId="BD_SEM001" startDateTime="2019-03-01 06:00:00.0" recurrenceRuleId="BD_SEM001"
+        recurrenceCount="1" />
+    <JobSandbox jobId="BD_SEM001" jobName="同步请求上日报表数据" runTime="2019-03-01 06:00:00.0" poolId="pool"
+        runAsUser="system" statusId="SERVICE_PENDING" serviceName="getBaiduDailyReport" loaderName="default" maxRetry="0"
+        currentRetryCount="0" recurrenceInfoId="BD_SEM001" parentJobId="BD_SEM001" previousJobId="BD_SEM001" />
+
+    <RecurrenceInfo recurrenceInfoId="BD_SEM002" startDateTime="2019-03-01 07:10:00.0" recurrenceRuleId="BD_SEM001"
+        recurrenceCount="1" />
+    <JobSandbox jobId="BD_SEM002" jobName="同步请求上日报表数据" runTime="2019-03-01 07:10:00.0" poolId="pool"
+        runAsUser="system" statusId="SERVICE_PENDING" serviceName="getBaiduDailyReport" loaderName="default" maxRetry="0"
+        currentRetryCount="0" recurrenceInfoId="BD_SEM002" parentJobId="BD_SEM002" previousJobId="BD_SEM002" />
+
+    <RecurrenceInfo recurrenceInfoId="BD_SEM201" startDateTime="2019-03-01 07:40:00.0" recurrenceRuleId="BD_SEM001"
+        recurrenceCount="1" />
+    <JobSandbox jobId="BD_SEM201" jobName="检查并处理未处理数据的台账" runTime="2019-03-01 07:40:00.0" poolId="pool"
+        runAsUser="system" statusId="SERVICE_PENDING" serviceName="processingBaiduNotFinishedReports" loaderName="default"
+        maxRetry="0" currentRetryCount="0" recurrenceInfoId="BD_SEM201" parentJobId="BD_SEM201" previousJobId="BD_SEM201" />
+
+    <RecurrenceInfo recurrenceInfoId="BD_SEM202" startDateTime="2019-03-01 08:10:00.0" recurrenceRuleId="BD_SEM001"
+        recurrenceCount="1" />
+    <JobSandbox jobId="BD_SEM202" jobName="检查并处理未处理数据的台账" runTime="2019-03-01 08:10:00.0" poolId="pool"
+        runAsUser="system" statusId="SERVICE_PENDING" serviceName="processingBaiduNotFinishedReports" loaderName="default"
+        maxRetry="0" currentRetryCount="0" recurrenceInfoId="BD_SEM202" parentJobId="BD_SEM202" previousJobId="BD_SEM202" />
+
+
+    <RecurrenceInfo recurrenceInfoId="BD_SEM301" startDateTime="2019-03-01 9:00:00.0" recurrenceRuleId="BD_SEM001"
+        recurrenceCount="1" />
+    <JobSandbox jobId="BD_SEM301" jobName="检查并处理有请求但是没有返回报告ID的台账,重新请求" runTime="2019-03-01 9:00:00.0" poolId="pool"
+        runAsUser="system" statusId="SERVICE_PENDING" serviceName="checkBaiduFailureReportRequest" loaderName="default"
+        maxRetry="0" currentRetryCount="0" recurrenceInfoId="BD_SEM301" parentJobId="BD_SEM301" previousJobId="BD_SEM301" />
+
+</entity-engine-xml>

@@ -29,4 +29,29 @@
         <description>服务-检查并处理未下载处理数据的台账</description>
     </service>
 
+
+    <service name="getBaiduDailyReport" engine="java" location="com.yhsem.common.BaiduRptServices" invoke="getDailyReport"
+        use-transaction="false">
+        <description>JOB服务-获取前一天的报告数据</description>
+    </service>
+
+    <service name="checkBaiduFailureReportRequest" engine="java" location="com.yhsem.common.BaiduRptServices"
+        invoke="checkFailureReportRequest" use-transaction="false">
+        <description>服务-检查并处理有请求但是没有返回报告ID的台账,重新请求</description>
+    </service>
+
+    <service name="queryBaiduReportStatus" engine="java" location="com.yhsem.common.BaiduRptServices" invoke="queryReportStatus"
+        use-transaction="false">
+        <description>服务-检查并处理有返回报告ID但服务器没处理完毕的台账,获取状态</description>
+    </service>
+
+    <service name="queryBaiduReportFileUrl" engine="java" location="com.yhsem.common.BaiduRptServices" invoke="queryReportFileUrl"
+        use-transaction="false">
+        <description>服务-检查并处理服务器处理完毕但没有返回文件地址的台账,获取报告路径</description>
+    </service>
+
+    <service name="processingBaiduNotFinishedReports" engine="java" location="com.yhsem.common.BaiduRptServices"
+        invoke="processingNotFinishedReports" use-transaction="false">
+        <description>服务-检查并处理未下载处理数据的台账</description>
+    </service>
 </services>

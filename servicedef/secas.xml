@@ -14,4 +14,19 @@
         <action service="processingNotFinishedReports" mode="async" persist="true" run-as-user="system" />
     </eca>
 
+
+    <eca service="getBaiduDailyReport" event="return">
+        <action service="queryBaiduReportStatus" mode="async" persist="true" run-as-user="system" />
+    </eca>
+    <eca service="checkBaiduFailureReportRequest" event="return">
+        <action service="queryBaiduReportStatus" mode="async" persist="true" run-as-user="system" />
+    </eca>
+    <eca service="queryBaiduReportStatus" event="return">
+        <action service="queryBaiduReportFileUrl" mode="async" persist="true" run-as-user="system" />
+    </eca>
+    <eca service="queryBaiduReportFileUrl" event="return">
+        <action service="processingBaiduNotFinishedReports" mode="async" persist="true" run-as-user="system" />
+    </eca>
+
+
 </service-eca>
